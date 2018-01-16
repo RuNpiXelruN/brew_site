@@ -1,6 +1,9 @@
 import axios from 'axios'
+import querystring from 'querystring'
 
 axios.defaults.baseURL = 'http://localhost:8000'
+
+// TODO use async/await
 
 const appService = {
   getBeers(limit, order, offset) {
@@ -29,7 +32,38 @@ const appService = {
         })
       // }
     })
+  },
+
+  getBrewerNames() {
+    return new Promise((resolve, reject) => {
+      axios.get(`/brewers/names`)
+      .then(data => {
+        resolve(data)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  },
+
+  imageTest(data) {
+    axios.post(`/beers/s3Image`, data, {
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'multipart/form-data'
+      }}
+    )
   }
+  // imageTest(data) {
+  //   axios.post(`/beers/imageTest`, data, {
+  //     headers: {
+  //       'accept': 'application/json',
+  //       'Content-Type': 'multipart/form-data'
+  //     }}
+  //   )
+  // }
+  // test(name) {
+  //   axios.post(`/beers/imageTest`, name, headers: {})
+  // }
 }
 
 export default appService
