@@ -1,6 +1,6 @@
 <template>
   <div class="create-beer-wrapper">
-    <v-form v-model="valid" ref="form" lazy-validation>
+    <v-form v-model="valid" ref="form" lazy-validation v-on:submit.prevent="handleSubmit">
       <v-text-field
         label="Name"
         v-model="name"
@@ -20,24 +20,44 @@
         type="number"
       ></v-text-field>
 
+      <v-select
+        v-bind:items="statuses"
+        single-line
+        auto
+        label="Choose beer status"
+        v-model="selectedStatus"
+      ></v-select>
+
+      <h3>{{selectedStatus}}</h3>
+
       <v-checkbox v-bind:label="`Featured?`" v-model="featured" light></v-checkbox>
 
-      <v-switch v-for="brewer in brewers" v-model="selectedBrewers" :value="brewer.id" :label="brewer.first_name" :key="brewer.id"></v-switch>
+      <v-select
+        class="testtttt"
+        v-bind:items="brewers"
+        multiple
+        single-line
+        auto
+        append-icon=""
+        hide-details
+        label="Select"
+        v-model="selectedBrewers">
+      </v-select>
 
-      <v-checkbox
-        label="Do you agree?"
-        v-model="checkbox"
-        :rules="[v => !!v || 'You must agree to continue!']"
-        required
-      ></v-checkbox>
+      <h3>{{selectedBrewers}}</h3>
 
-      <v-btn
-        @click="submit"
-        :disabled="!valid"
-      >
-        submit
-      </v-btn>
-      <v-btn @click="clear">clear</v-btn>
+      <input type="file" ref="file" name="file" v-on:change="handleFileUpload" value=""/>
+      <br>
+      Selected file: {{file && file.name}}
+      <br>
+
+      <button type="submit" name="button">Submit Me</button>
+
+      <!-- <v-btn
+        :disabled="!valid">
+        Submit
+      </v-btn> -->
+      <v-btn v-on:click="clear">clear</v-btn>
     </v-form>
   </div>
 </template>
@@ -45,26 +65,24 @@
 <script>
   import AppService from '@/app.service.js'
   export default {
-    data: () => ({
-      featured: false,
-      alcohol_content: null,
-      description: "",
-      selectedBrewers: [],
-      valid: true,
-      name: '',
-      nameRules: [
-        (v) => !!v || 'Name is required',
-        // (v) => v && v.length <= 10 || 'Name must be less than 10 characters'
-      ],
-      email: '',
-      emailRules: [
-        (v) => !!v || 'E-mail is required',
-        (v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
-      ],
-      select: null,
-      brewers: [],
-      checkbox: false
-    }),
+    data() {
+      return {
+        file: null,
+        featured: false,
+        alcohol_content: null,
+        description: null,
+        brewers: [],
+        selectedBrewers: [],
+        statuses: ["upcoming", "brewing", "active", "empty"],
+        selectedStatus: null,
+        valid: true,
+        name: null,
+        nameRules: [
+          (v) => !!v || 'Name is required',
+          // (v) => v && v.length <= 10 || 'Name must be less than 10 characters'
+        ],
+      }
+    },
     created() {
       this.getBrewerNames()
     },
@@ -73,33 +91,65 @@
         AppService.getBrewerNames()
         .then(data => {
           var brews = data.data
-          for (var i=0; i < brews.length; i++) {
-            brews[i].id = brews[i].id + ""
-          }
-          this.brewers = brews
+          var brewsNew = brews.map((brewer) => {
+            return {
+              value: brewer.id,
+              text: `${brewer.first_name} ${brewer.last_name}`
+            }
+          })
+          this.brewers = brewsNew
         })
       },
-      submit () {
+      handleFileUpload() {
+        this.file = this.$refs.file.files[0]
+      },
+      handleSubmit() {
+        var self = this
         if (this.$refs.form.validate()) {
-          // Native form submission is not yet supported
-          axios.post('/api/submit', {
-            name: this.name,
-            email: this.email,
-            select: this.select,
-            checkbox: this.checkbox
-          })
+          var createBeerData = new FormData()
+
+          if (this.file) {
+            createBeerData.append('image', this.file, this.file.name)
+          }
+          createBeerData.append('name', this.name)
+          createBeerData.append('name', this.name)
+          createBeerData.append('description', this.description)
+          createBeerData.append('alcohol_content', this.alcohol_content)
+          createBeerData.append('featured', this.featured)
+          createBeerData.append('brewer_ids', this.selectedBrewers)
+          createBeerData.append('status', this.selectedStatus)
+          //
+          AppService.createBeer(createBeerData)
         }
       },
+      // submit () {
+      //   if (this.$refs.form.validate()) {
+      //     console.log("name", this.name);
+      //
+      //     var createBeerData = new FormData()
+      //     createBeerData.append('image', this.file, this.file.name)
+      //     createBeerData.append('name', this.name)
+      //     createBeerData.append('description', this.description)
+      //     createBeerData.append('alcohol_content', this.alcohol_content)
+      //     createBeerData.append('featured', this.featured)
+      //     createBeerData.append('brewer_ids', this.selectedBrewers)
+      //     createBeerData.append('status', this.selectedStatus)
+      //
+      //     AppService.createBeer(createBeerData)
+      //   }
+      // },
       clear () {
         this.$refs.form.reset()
+        this.file = null
+        this.$refs.file.value = ''
       }
     }
   }
 </script>
 <style lang="css">
-  .create-beer-wrapper {
-    background: white;
-  }
+  /* .create-beer-wrapper {
+    background-color: #FFF8E2;
+  } */
 </style>
 <!-- <template>
   <div class="add-beer">

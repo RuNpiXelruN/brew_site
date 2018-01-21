@@ -54,13 +54,41 @@ exports.cssLoaders = function (options) {
     }
   }
 
+  function resolveResource(fileName) {
+		return path.resolve(__dirname, '../src/assets/scss/' + fileName)
+	}
+
+  function generateSassResourceLoader() {
+    var loaders = [
+      cssLoader,
+      'sass-loader', {
+        loader: 'sass-resources-loader',
+        options: {
+          resources: [
+            resolveResource('mixins/index.scss'),
+            resolveResource('vars/index.scss'),
+            resolveResource('globals/index.scss')
+          ]
+        }
+      }
+    ]
+    if (options.extract) {
+      return ExtractTextPlugin.extract({
+        use: loaders,
+        fallback: 'vue-style-loader'
+      })
+    } else {
+      return ['vue-style-loader'].concat(loaders)
+    }
+  }
+
   // https://vue-loader.vuejs.org/en/configurations/extract-css.html
   return {
     css: generateLoaders(),
     postcss: generateLoaders(),
     less: generateLoaders('less'),
-    sass: generateLoaders('sass', { indentedSyntax: true }),
-    scss: generateLoaders('sass'),
+    sass: generateSassResourceLoader(),
+    scss: generateSassResourceLoader(),
     stylus: generateLoaders('stylus'),
     styl: generateLoaders('stylus')
   }

@@ -1,7 +1,4 @@
 <template>
-  <div>
-    <h1>Status Beers here</h1>
-  </div>
 </template>
 <script>
 import AppService from '@/app.service.js'

@@ -45,6 +45,15 @@ const appService = {
     })
   },
 
+  createBeer(data) {
+    axios.post(`/beers`, data, {
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+  },
+
   imageTest(data) {
     axios.post(`/beers/s3Image`, data, {
       headers: {
@@ -52,6 +61,17 @@ const appService = {
         'Content-Type': 'multipart/form-data'
       }}
     )
+  },
+
+  uploadImage(data) {
+    return new Promise((resolve, reject) => {
+      axios.post(`/beers/newimage`, data, {
+        headers: {
+          'accept': 'application/json',
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+    })
   }
   // imageTest(data) {
   //   axios.post(`/beers/imageTest`, data, {

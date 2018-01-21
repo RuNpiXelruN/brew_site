@@ -5,9 +5,14 @@ import App from './App'
 import router from './router'
 import Vuetify from 'vuetify'
 import('../node_modules/vuetify/dist/vuetify.min.css')
+import './assets/scss/index.scss'
 
 Vue.config.productionTip = false
-Vue.use(Vuetify)
+Vue.use(Vuetify, {
+  theme: {
+    bgMain: '#FFF8E2'
+  }
+})
 
 /* eslint-disable no-new */
 new Vue({

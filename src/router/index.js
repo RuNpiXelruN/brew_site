@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import AppMain from '@/components/AppMain'
 import Beers from '@/components/Beers'
 import CreateBeer from '@/components/CreateBeer'
+import ImageUploader from '@/components/ImageUploader'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/beers/new',
       name: 'createBeer',
       component: CreateBeer
+    },
+    {
+      path: '/imageupload',
+      name: 'imageupload',
+      component: ImageUploader
     }
   ]
 })

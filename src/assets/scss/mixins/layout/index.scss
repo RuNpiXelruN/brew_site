@@ -1,0 +1,64 @@
+@mixin flexRowC {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+@mixin flexRowSt {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+@mixin flexRowSp {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+@mixin flexCol {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  width: 100%;
+}
+
+@mixin flexColC {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+@mixin flexColSt {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  width: 100%;
+}
+
+@mixin h2Style {
+  color: $textColor;
+  font-family: "PoppinsSemiBold", sans-serif;
+  font-size: 36px;
+}
+
+@mixin h3Style {
+  color: $textColor;
+  font-family: "PoppinsSemiBold", sans-serif;
+  font-size: 24px;
+}
+
+@mixin pStyle {
+  color: $textColor;
+  font-family: "PoppinsRegular", sans-serif;
+  font-size: 18px;
+  line-height: 2;
+}
