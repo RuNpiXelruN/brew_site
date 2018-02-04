@@ -73,7 +73,7 @@
         description: null,
         brewers: [],
         selectedBrewers: [],
-        statuses: ["upcoming", "brewing", "active", "empty"],
+        statuses: ["upcoming", "brewing", "active-full", "active-empty", "past"],
         selectedStatus: null,
         valid: true,
         name: null,

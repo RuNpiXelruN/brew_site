@@ -7,24 +7,33 @@
       <div class="active-beers-section">
         <div class="active-beer" v-for="beer in beers" v-bind:key="beers.id">
           <div class="image-container">
-            <div class="runout runout-img"></div>
+            <div v-if="beer.status.name === 'active-empty'" class="runout runout-img"></div>
             <img v-bind:src="beer.image_url" alt="image of currently active beer" class="beer-card-image">
           </div>
 
           <div class="beer-title-wrapper">
-            <div class="runout"></div>
+            <div v-if="beer.status.name === 'active-empty'" class="runout"></div>
             <span class="beer-card-title">Title</span>
             <h3 class="beer-card-heading">{{beer.name}}</h3>
           </div>
 
           <div class="beer-description-wrapper">
-            <div class="runout"></div>
+            <div v-if="beer.status.name === 'active-empty'" class="runout"></div>
             <span class="beer-card-title">Description</span>
-            <p class="beer-card-description">{{beer.description}}</p>
-            <span>{{beer.alcohol_content}} ABV</span>
+            <div class="desc-flex">
+              <p class="beer-card-description">{{beer.description}}</p>
+              <span>{{beer.alcohol_content}} ABV</span>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- TODO add alt tags to images -->
+      <!-- TODO add empty class to mob slider beers on tap -->
+      <div class="active-beers-mob">
+        <mob-slider :beers="beers" />
+      </div>
+
     </div>
 
     <status-beers status="active" limit="3" order="desc" v-on:data="setData"></status-beers>
@@ -32,21 +41,25 @@
 </template>
 
 <script>
+import MobSlider from '@/components/MobSlider.vue'
 import StatusBeers from '@/components/StatusBeers.vue'
 export default {
   components: {
-    StatusBeers
+    StatusBeers,
+    MobSlider
   },
   data() {
     return {
-      beers: []
+      beers: [],
+
     }
   },
   methods: {
     setData(data) {
       this.beers = data
     }
-  }
+  },
+  mounted() {}
 }
 </script>
 <style lang="scss">
@@ -56,6 +69,14 @@ export default {
     .status-heading {
       @include h2Style;
       margin-bottom: 40px;
+      @media screen and (max-width: 991px) {
+        font-size: 32px;
+        margin-bottom: 20px;
+      }
+      @media screen and (max-width: 768px) {
+        font-size: 28px;
+        margin-bottom: 12px;
+      }
     }
 
     .status-p {
@@ -63,6 +84,19 @@ export default {
       width: 50%;
       margin-bottom: 60px;
       text-align: left;
+      @media screen and (max-width: 991px) {
+        font-size: 14px;
+        line-height: 1.5;
+      }
+    }
+
+    .active-beers-mob {
+      display: none;
+      @media screen and (max-width: 768px) {
+        display: block;
+        width: 100%;
+        margin-bottom: 90px;
+      }
     }
 
     .active-beers-section {
@@ -71,6 +105,12 @@ export default {
       border: 4px solid $textColor;
       margin-bottom: 150px;
       align-items: stretch;
+      @media screen and (max-width: 991px) {
+        margin-bottom: 110px;
+      }
+      @media screen and (max-width: 768px) {
+        display: none;
+      }
 
       .active-beer {
         @include flexCol;
@@ -78,11 +118,19 @@ export default {
 
         .image-container {
           width: 100%;
+          height: 23vw;
+          overflow: hidden;
           background-size: cover;
           position: relative;
 
           .beer-card-image {
-
+            transform-origin: bottom;
+            height: 30vw;
+            position: absolute;
+            z-index: 1;
+            bottom: 1vw;
+            width: 100%;
+            left: 0;
           }
         }
 
@@ -91,15 +139,25 @@ export default {
           font-size: 14px;
           font-family: "PoppinsRegular", sans-serif;
           margin-bottom: 6px;
+          @media screen and (max-width: 991px) {
+            font-size: 12px;
+          }
         }
 
         .beer-card-heading {
           @include h3Style;
+          @media screen and (max-width: 991px) {
+            font-size: 16px;
+          }
         }
 
         .beer-card-description {
           @include pStyle;
           text-align: left;
+          @media screen and (max-width: 991px) {
+            font-size: 14px;
+            line-height: 1.5;
+          }
         }
 
         &:first-child {
@@ -129,10 +187,21 @@ export default {
           border-bottom: 2px solid $textColor;
         }
 
+        .desc-flex {
+          height: 160px;
+          display: flex;
+          flex-flow: column nowrap;
+          align-items: flex-start;
+          justify-content: space-between;
+        }
+
         .beer-title-wrapper, .beer-description-wrapper {
           @include flexColSt;
-          padding: 20px 16px 16px;
+          padding: 16px 0px 16px 7px;
           position: relative;
+          @media screen and (max-width: 991px) {
+            padding: 10px 12px;
+          }
         }
       }
     }
@@ -150,6 +219,7 @@ export default {
         background-repeat:no-repeat;
         background-position:center center;
         background-size: 103% 103%, auto;
+        z-index: 2;
       }
     }
   }

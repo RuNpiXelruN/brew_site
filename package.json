@@ -13,6 +13,7 @@
     "axios": "^0.17.1",
     "form-data": "^2.3.1",
     "fs": "^0.0.1-security",
+    "jquery": "^3.3.1",
     "mapbox-gl": "^0.43.0",
     "mapbox-gl-vue": "^1.7.0",
     "node-sass": "^4.7.2",

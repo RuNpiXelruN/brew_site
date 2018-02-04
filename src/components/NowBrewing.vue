@@ -45,6 +45,10 @@ export default {
     .status-heading {
       @include h2Style;
       margin-bottom: 40px;
+      @media screen and (max-width: 991px) {
+        font-size: 32px;
+        margin-bottom: 20px;
+      }
     }
 
     .status-p {
@@ -52,15 +56,28 @@ export default {
       width: 50%;
       margin-bottom: 60px;
       text-align: left;
+      @media screen and (max-width: 991px) {
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 40px;
+      }
     }
 
     .brewing-image-section {
       @include flexRowC;
       margin: 6% 0;
+      @media screen and (max-width: 991px) {
+        margin: 6% 0;
+      }
+
 
       .brewing-beer {
         width: 22%;
         height: 32vw;
+        @media screen and (max-width: 768px) {
+          width: 28%;
+          height: 38vw;
+        }
 
         &:last-child {
           .beer-keg {
@@ -84,6 +101,9 @@ export default {
 
           .beer-card-heading {
             @include h3Style;
+            @media screen and (max-width: 768px) {
+              font-size: 16px;
+            }
           }
         }
       }

@@ -10,11 +10,11 @@
             shouldn't be hard
           </h2>
 
-          <p class="hero-p">With Mentally Fermented, it's simple, personal<br>and fun for everyone
+          <p class="hero-p">With Mentally Fermented, it's simple, personal and fun for everyone
           </p>
         </div>
         <div class="hero-image">
-          <img src="https://brew-site.s3-ap-southeast-2.amazonaws.com/beer-bottle-hero.png">
+          <img class="beer-bottle-main" src="https://brew-site.s3-ap-southeast-2.amazonaws.com/beer-bottle-hero.png">
         </div>
       </div>
 
@@ -32,9 +32,10 @@
           </p>
         </div>
 
-        <on-tap></on-tap>
-        <now-brewing></now-brewing>
-        <past-beers></past-beers>
+        <on-tap />
+        <now-brewing />
+        <past-beers />
+        <next-brew-date />
       </div>
     </div>
   </div>
@@ -42,21 +43,30 @@
 
 <script>
 
-// TODO add extra status type to beers for class add to 'On Tap' section
+// TODO add max-width to sliders and map
+// TODO optimize image sizes
 
+import NextBrewDate from '@/components/NextBrewDate.vue'
 import PastBeers from '@/components/Empty.vue'
 import NowBrewing from '@/components/NowBrewing.vue'
 import OnTap from '@/components/OnTap.vue'
+import MfMap from '@/components/MfMap.vue'
 export default {
   components: {
     OnTap,
     NowBrewing,
-    PastBeers
-  }
+    PastBeers,
+    NextBrewDate,
+    MfMap
+  },
+  created() {},
+  mounted() {},
+  methods: {}
 }
 </script>
 
 <style lang="scss">
+  // 991, 767, 469
   .app-main {
     width: 100%;
 
@@ -69,25 +79,66 @@ export default {
         margin-right: auto;
         margin-top: 50px;
         margin-bottom: 50px;
+        @media screen and (max-width: 991px) {
+          margin-top: 40px;
+          margin-bottom: 40px;
+        }
       }
 
       .hero-wrapper {
         @include flexRowSp;
+
+        @media screen and (max-width: 768px) {
+          .hero-text {
+            width: 100%;
+          }
+        }
 
         .hero-subtitle {
           font-family: 'PoppinsSemiBold', sans-serif;
           font-size: 48px;
           line-height: 1.3;
           margin-bottom: 40px;
+          @media screen and (max-width: 991px) {
+            font-size: 36px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+          }
+          @media screen and (max-width: 768px) {
+            font-size: 28px;
+            margin-bottom: 10px;
+            line-height: 1.2;
+          }
         }
 
         .hero-p {
           font-family: 'PoppinsRegular', sans-serif;
           font-size: 24px;
+          width: 440px;
+          @media screen and (max-width: 991px) {
+            font-size: 18px;
+            width: 400px;
+          }
+          @media screen and (max-width: 768px) {
+            font-size: 16px;
+            width: 300px;
+          }
         }
 
         .hero-image {
           width: 40%;
+          @media screen and (max-width: 991px) {
+            width: 38%;
+          }
+
+          .beer-bottle-main {
+            @media screen and (max-width: 991px) {
+              height: 52vw;
+            }
+            @media screen and (max-width: 768px) {
+              height: 46vw;
+            }
+          }
         }
       }
     }
@@ -110,6 +161,15 @@ export default {
             margin-bottom: 12%;
             text-align: left;
             line-height: 2;
+            @media screen and (max-width: 991px) {
+              font-size: 18px;
+              line-height: 1.5;
+              margin-bottom: 9%;
+            }
+            @media screen and (max-width: 768px) {
+              font-size: 16px;
+              line-height: 1.3;
+            }
           }
         }
       }
