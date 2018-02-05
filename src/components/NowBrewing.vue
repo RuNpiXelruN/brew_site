@@ -46,7 +46,7 @@ export default {
       @include h2Style;
       margin-bottom: 40px;
       @media screen and (max-width: 991px) {
-        font-size: 32px;
+        // font-size: 32px;
         margin-bottom: 20px;
       }
     }
@@ -56,10 +56,19 @@ export default {
       width: 50%;
       margin-bottom: 60px;
       text-align: left;
+      line-height: 1.5;
       @media screen and (max-width: 991px) {
         font-size: 14px;
-        line-height: 1.5;
         margin-bottom: 40px;
+      }
+      @media screen and (max-width: 768px) {
+        font-size: 16px;
+        width: 70%;
+      }
+      @media screen and (max-width: 570px) {
+      }
+      @media screen and (max-width: 491px) {
+        width: 80%;
       }
     }
 
@@ -74,9 +83,13 @@ export default {
       .brewing-beer {
         width: 22%;
         height: 32vw;
-        @media screen and (max-width: 768px) {
-          width: 28%;
-          height: 38vw;
+        @media screen and (max-width: 991px) {
+          width: 30%;
+          height: 48vw;
+        }
+        @media screen and (max-width: 570px) {
+          width: 40%;
+          height: 62vw;
         }
 
         &:last-child {

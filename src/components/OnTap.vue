@@ -51,7 +51,6 @@ export default {
   data() {
     return {
       beers: [],
-
     }
   },
   methods: {
@@ -59,22 +58,28 @@ export default {
       this.beers = data
     }
   },
-  mounted() {}
+  mounted() {},
+  watch: {
+    beers() {
+      console.log("same?", this.beers);
+    }
+  }
 }
 </script>
 <style lang="scss">
   .on-tap-section {
     @include flexCol;
+    @media screen and (max-width: 768px) {
+      margin-top: 8%;
+    }
 
     .status-heading {
       @include h2Style;
       margin-bottom: 40px;
       @media screen and (max-width: 991px) {
-        font-size: 32px;
         margin-bottom: 20px;
       }
       @media screen and (max-width: 768px) {
-        font-size: 28px;
         margin-bottom: 12px;
       }
     }
@@ -84,9 +89,18 @@ export default {
       width: 50%;
       margin-bottom: 60px;
       text-align: left;
+      line-height: 1.5;
       @media screen and (max-width: 991px) {
         font-size: 14px;
-        line-height: 1.5;
+      }
+      @media screen and (max-width: 768px) {
+        font-size: 16px;
+        width: 70%;
+      }
+      @media screen and (max-width: 570px) {
+      }
+      @media screen and (max-width: 491px) {
+        width: 80%;
       }
     }
 

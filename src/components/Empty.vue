@@ -447,7 +447,6 @@ export default {
       margin-top: 40px;
       margin-bottom: 40px;
       @media screen and (max-width: 991px) {
-        font-size: 32px;
         margin-bottom: 20px;
       }
     }
@@ -457,10 +456,19 @@ export default {
       width: 50%;
       text-align: left;
       margin-bottom: 60px;
+      line-height: 1.5;
       @media screen and (max-width: 991px) {
         font-size: 14px;
-        line-height: 1.5;
         margin-bottom: 40px;
+      }
+      @media screen and (max-width: 768px) {
+        font-size: 16px;
+        width: 70%;
+      }
+      @media screen and (max-width: 570px) {
+      }
+      @media screen and (max-width: 491px) {
+        width: 80%;
       }
     }
 

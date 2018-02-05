@@ -61,9 +61,18 @@ export default {
       width: 50%;
       margin-bottom: 80px;
       text-align: left;
+      line-height: 1.5;
       @media screen and (max-width: 991px) {
         font-size: 14px;
-        line-height: 1.5;
+      }
+      @media screen and (max-width: 768px) {
+        font-size: 16px;
+        width: 70%;
+      }
+      @media screen and (max-width: 570px) {
+      }
+      @media screen and (max-width: 491px) {
+        width: 80%;
       }
     }
 

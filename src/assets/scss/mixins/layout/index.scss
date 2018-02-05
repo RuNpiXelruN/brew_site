@@ -48,6 +48,18 @@
   color: $textColor;
   font-family: "PoppinsSemiBold", sans-serif;
   font-size: 36px;
+  @media screen and (max-width: 991px) {
+    font-size: 32px;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: 30px;
+  }
+  @media screen and (max-width: 570px) {
+    font-size: 30px;
+  }
+  @media screen and (max-width: 491px) {
+    font-size: 30px;
+  }
 }
 
 @mixin h3Style {

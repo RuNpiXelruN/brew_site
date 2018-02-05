@@ -13,9 +13,11 @@
           <p class="hero-p">With Mentally Fermented, it's simple, personal and fun for everyone
           </p>
         </div>
-        <div class="hero-image">
+
+        <div class="hero-image"></div>
+        <!-- <div class="hero-image">
           <img class="beer-bottle-main" src="https://brew-site.s3-ap-southeast-2.amazonaws.com/beer-bottle-hero.png">
-        </div>
+        </div> -->
       </div>
 
     </div>
@@ -66,16 +68,28 @@ export default {
 </script>
 
 <style lang="scss">
-  // 991, 767, 469
+  // 991, 767, 570, 469
   .app-main {
     width: 100%;
 
     .hero-section {
       @include flexCol;
-      width: 80%;
+      width: 90%;
       margin-left: 10%;
+      position: relative;
+      @media screen and (max-width: 768px) {
+        height: 630px;
+      }
+      @media screen and (max-width: 570px) {
+        width: 95%;
+        margin-left: 5%;
+        height: 500px;
+      }
 
       .hero-logo {
+        position: absolute;
+        top: 0;
+        left: 0;
         margin-right: auto;
         margin-top: 50px;
         margin-bottom: 50px;
@@ -83,31 +97,52 @@ export default {
           margin-top: 40px;
           margin-bottom: 40px;
         }
+        @media screen and (max-width: 491px) {
+          width: 210px;
+          margin-top: 30px;
+          margin-bottom: 30px;
+        }
       }
 
       .hero-wrapper {
         @include flexRowSp;
+        height: inherit;
 
-        @media screen and (max-width: 768px) {
-          .hero-text {
-            width: 100%;
+        .hero-text {
+          width: 100%;
+
+          @media screen and (max-width: 768px) {
+            width: 60%;
+            margin-top: 50px;
+          }
+          @media screen and (max-width: 570px) {
+            width: 62%;
+            margin-top: -10px;
+          }
+          @media screen and (max-width: 491px) {
+            width: 55%;
           }
         }
 
         .hero-subtitle {
           font-family: 'PoppinsSemiBold', sans-serif;
           font-size: 48px;
-          line-height: 1.3;
-          margin-bottom: 40px;
+          line-height: 1.5;
+          margin-bottom: 30px;
           @media screen and (max-width: 991px) {
-            font-size: 36px;
+            font-size: 44px;
             margin-bottom: 20px;
-            line-height: 1.2;
           }
           @media screen and (max-width: 768px) {
-            font-size: 28px;
-            margin-bottom: 10px;
-            line-height: 1.2;
+            font-size: 35px;
+            margin-bottom: 20px;
+          }
+          @media screen and (max-width: 590px) {
+            font-size: 30px;
+            margin-bottom: 20px;
+          }
+          @media screen and (max-width: 491px) {
+            font-size: 5.7vw;
           }
         }
 
@@ -115,30 +150,62 @@ export default {
           font-family: 'PoppinsRegular', sans-serif;
           font-size: 24px;
           width: 440px;
+          line-height: 1.5;
           @media screen and (max-width: 991px) {
             font-size: 18px;
-            width: 400px;
+            width: 490px;
           }
           @media screen and (max-width: 768px) {
+            font-size: 20px;
+            width: 54vw;
+          }
+          @media screen and (max-width: 590px) {
             font-size: 16px;
-            width: 300px;
+            width: 310px;
+          }
+          @media screen and (max-width: 491px) {
+            font-size: 3.7vw;
+            width: 223px;
           }
         }
 
         .hero-image {
-          width: 40%;
+          background-image: url(https://brew-site.s3-ap-southeast-2.amazonaws.com/beer-bottle-hero.png);
+          height: 800px;
+          width: 60%;
+          background-size: 720px;
+          background-position: left bottom;
           @media screen and (max-width: 991px) {
-            width: 38%;
+            height: 700px;
+            background-size: 620px;
+            width: 45%;
           }
-
-          .beer-bottle-main {
-            @media screen and (max-width: 991px) {
-              height: 52vw;
-            }
-            @media screen and (max-width: 768px) {
-              height: 46vw;
-            }
+          @media screen and (max-width: 768px) {
+            height: inherit;
+            background-size: 850px;
+            background-position: 0 70%;
+            width: 40%;
           }
+          @media screen and (max-width: 570px) {
+            background-size: 830px;
+            width: 45%;
+          }
+          @media screen and (max-width: 491px) {
+            background-size: 780px;
+            width: 40%;
+          }
+          //
+          // .beer-bottle-main {
+          //   @media screen and (max-width: 991px) {
+          //     height: 52vw;
+          //   }
+          //   @media screen and (max-width: 768px) {
+          //     height: 46vw;
+          //   }
+          //   @media screen and (max-width: 570px) {
+          //     height: 60vw;
+          //   }
+          // }
         }
       }
     }
@@ -149,6 +216,9 @@ export default {
       .status-wrapper {
         width: 100;
         margin-top: 10%;
+        @media screen and (max-width: 768px) {
+          margin-top: 15%;
+        }
 
         .blurb-wrapper {
           @include flexRowC;
@@ -167,8 +237,15 @@ export default {
               margin-bottom: 9%;
             }
             @media screen and (max-width: 768px) {
-              font-size: 16px;
-              line-height: 1.3;
+              font-size: 20px;
+              width: 60%;
+            }
+            @media screen and (max-width: 570px) {
+              width: 70%;
+            }
+            @media screen and (max-width: 491px) {
+              font-size: 18px;
+              width: 80%;
             }
           }
         }
