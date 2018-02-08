@@ -4,6 +4,7 @@ import AppMain from '@/components/AppMain'
 import Beers from '@/components/Beers'
 import CreateBeer from '@/components/CreateBeer'
 import ImageUploader from '@/components/ImageUploader'
+import AuthTest from '@/components/AuthTest'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/imageupload',
       name: 'imageupload',
       component: ImageUploader
+    },
+    {
+      path: '/authTest',
+      name: 'authTest',
+      component: AuthTest
     }
   ]
 })

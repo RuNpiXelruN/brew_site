@@ -8,6 +8,7 @@
       <router-link :to="{ name: 'beers', query: {status: 'empty', order: 'desc'} }">Off Tap</router-link>
       <router-link :to="{ name: 'createBeer', query: {} }">Create Beer</router-link>
       <router-link :to="{ name: 'imageupload', query: {} }">Upload Image</router-link>
+      <router-link :to="{ name: 'authTest', query: {} }">AuthTest</router-link>
     </div>
   </div>
 </template>

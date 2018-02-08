@@ -14,7 +14,7 @@
 
       <slick ref="slick" v-if="beers.length > 0" :options="slickOptions">
         <div class="past-beer" v-for="(beer, index) in beers" :key="index">
-          <div class="image-wrapper"></div>
+          <div class="image-wrapper" v-bind:style="{ backgroundImage: 'url(' + beer.image_url + ')' }"></div>
           <div class="text-wrapper">
               <div class="placeholder-div"></div>
               <div class="slide-beer-info">
@@ -117,6 +117,7 @@ export default {
               height: 550px;
               border: 4px solid $textColor;
               background-image: url("https://brew-site.s3-ap-southeast-2.amazonaws.com/slider-dots-bg.png");
+              background-size: cover;
 
               @media screen and (max-width: 991px) {
                 height: 400px;
@@ -134,7 +135,6 @@ export default {
               }
 
               .image-wrapper {
-                background-image: url("https://brew-site.s3-ap-southeast-2.amazonaws.com/passionfruit-ipa.svg");
                 width: 50%;
                 height: 100%;
                 background-position: center;

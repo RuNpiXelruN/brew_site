@@ -52,6 +52,14 @@ const appService = {
     })
   },
 
+  async testAuth() {
+    try {
+      await axios.get(`/auth`)
+    } catch(err) {
+      console.log("Error: ", err);
+    }
+  }
+
   // async test() {
   //   try {
   //     let results = await Promise.all([
