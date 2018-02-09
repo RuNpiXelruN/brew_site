@@ -15,9 +15,6 @@
         </div>
 
         <div class="hero-image"></div>
-        <!-- <div class="hero-image">
-          <img class="beer-bottle-main" src="https://brew-site.s3-ap-southeast-2.amazonaws.com/beer-bottle-hero.png">
-        </div> -->
       </div>
 
     </div>
@@ -71,12 +68,20 @@ export default {
   // 991, 767, 570, 469
   .app-main {
     width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
 
     .hero-section {
       @include flexCol;
-      width: 90%;
-      margin-left: 10%;
+      width: 100%;
+      max-width: 1350px;
       position: relative;
+      align-self: center;
+
+      @media screen and (max-width: 1600px) {
+        width: 80%;
+      }
+
       @media screen and (max-width: 768px) {
         height: 630px;
       }
@@ -107,6 +112,10 @@ export default {
       .hero-wrapper {
         @include flexRowSp;
         height: inherit;
+        @media screen and (max-width: 1600px) {
+          width: 120%;
+          margin-left: 20%;
+        }
 
         .hero-text {
           width: 100%;
@@ -172,9 +181,13 @@ export default {
         .hero-image {
           background-image: url(https://brew-site.s3-ap-southeast-2.amazonaws.com/beer-bottle-hero.png);
           height: 800px;
-          width: 60%;
-          background-size: 720px;
-          background-position: left bottom;
+          width: 100%;
+          background-size: 700px;
+          background-position: -60% bottom;
+
+          @media screen and (max-width: 1600px) {
+            background-position: 0% bottom;
+          }
           @media screen and (max-width: 991px) {
             height: 700px;
             background-size: 620px;
@@ -194,28 +207,18 @@ export default {
             background-size: 780px;
             width: 40%;
           }
-          //
-          // .beer-bottle-main {
-          //   @media screen and (max-width: 991px) {
-          //     height: 52vw;
-          //   }
-          //   @media screen and (max-width: 768px) {
-          //     height: 46vw;
-          //   }
-          //   @media screen and (max-width: 570px) {
-          //     height: 60vw;
-          //   }
-          // }
         }
       }
     }
 
     .about-fermented {
       border-top: 4px solid $textColor;
+      // margin: 0 -9999rem;
+      // padding: 0.25rem 9999rem;
 
       .status-wrapper {
         width: 100;
-        margin-top: 10%;
+        margin-top: 10rem;
         @media screen and (max-width: 768px) {
           margin-top: 15%;
         }
@@ -228,9 +231,11 @@ export default {
             font-family: "PoppinsRegular", sans-serif;
             font-size: 24px;
             width: 50%;
-            margin-bottom: 12%;
+            margin-bottom: 10rem;
             text-align: left;
             line-height: 2;
+            max-width: 1100px;
+
             @media screen and (max-width: 991px) {
               font-size: 18px;
               line-height: 1.5;

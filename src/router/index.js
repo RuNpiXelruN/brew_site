@@ -5,6 +5,10 @@ import Beers from '@/components/Beers'
 import CreateBeer from '@/components/CreateBeer'
 import ImageUploader from '@/components/ImageUploader'
 import AuthTest from '@/components/AuthTest'
+import vueScrollTo from 'vue-scroll-to';
+
+// Vue.use(vueScrollTo, options);
+Vue.use(vueScrollTo);
 
 Vue.use(Router)
 

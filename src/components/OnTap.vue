@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="on-tap-section">
+    <div id="onTap" class="on-tap-section">
       <h2 class="status-heading">On Tap</h2>
       <p class="status-p">We maintain 1-3 beers on tap, which are constantly changing to satisfy the never-ending thirst of our cicerones.</p>
 
@@ -90,6 +90,7 @@ export default {
       margin-bottom: 60px;
       text-align: left;
       line-height: 1.5;
+      max-width: 1100px;
       @media screen and (max-width: 991px) {
         font-size: 14px;
       }
@@ -119,6 +120,8 @@ export default {
       border: 4px solid $textColor;
       margin-bottom: 150px;
       align-items: stretch;
+      max-width: 1300px;
+
       @media screen and (max-width: 991px) {
         margin-bottom: 110px;
       }
@@ -129,6 +132,7 @@ export default {
       .active-beer {
         @include flexCol;
         width: 33.333%;
+        max-height: 850px;
 
         .image-container {
           width: 100%;
@@ -136,6 +140,7 @@ export default {
           overflow: hidden;
           background-size: cover;
           position: relative;
+          max-height: 440px;
 
           .beer-card-image {
             transform-origin: bottom;
@@ -145,6 +150,7 @@ export default {
             bottom: 1vw;
             width: 100%;
             left: 0;
+            max-height: 600px;
           }
         }
 
@@ -156,12 +162,18 @@ export default {
           @media screen and (max-width: 991px) {
             font-size: 12px;
           }
+          @media screen and (max-width: 570px) {
+            font-size: 10px;
+          }
         }
 
         .beer-card-heading {
           @include h3Style;
           @media screen and (max-width: 991px) {
             font-size: 16px;
+          }
+          @media screen and (max-width: 570px) {
+            font-size: 13px;
           }
         }
 
@@ -171,6 +183,9 @@ export default {
           @media screen and (max-width: 991px) {
             font-size: 14px;
             line-height: 1.5;
+          }
+          @media screen and (max-width: 570px) {
+            font-size: 10px;
           }
         }
 

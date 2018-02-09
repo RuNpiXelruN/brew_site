@@ -1,5 +1,5 @@
 <template>
-  <div class="past-beers-wrapper">
+  <div id="pastBeers" class="past-beers-wrapper">
 
     <h2 class="status-heading">Off Tap</h2>
     <p class="status-p">A slow-growing selection of limited edition brews and oak aged oddities that are retired but always ready to make a resurgence.</p>
@@ -89,6 +89,7 @@ export default {
     @include flexColC;
     position: relative;
     margin-top: 50px;
+    max-width: 1600px;
 
     .slick-slider {
       height: 100%;
@@ -209,6 +210,9 @@ export default {
                         font-size: 14px;
                         margin-bottom: 6px;
                       }
+                      @media screen and (max-width: 570px) {
+                        font-size: 10px;
+                      }
                     }
                     .beer-card-heading {
                       @include h3Style;
@@ -217,6 +221,9 @@ export default {
                       }
                       @media screen and (max-width: 768px) {
                         font-size: 16px;
+                      }
+                      @media screen and (max-width: 570px) {
+                        font-size: 13px;
                       }
                     }
                   }
@@ -241,6 +248,9 @@ export default {
                         font-size: 14px;
                         margin-bottom: 6px;
                       }
+                      @media screen and (max-width: 570px) {
+                        font-size: 10px;
+                      }
                     }
 
                     .desc-flex {
@@ -256,7 +266,7 @@ export default {
                         height: 80px;
                       }
                       @media screen and (max-width: 570px) {
-                        height: 70px;
+                        height: 100%;
                       }
 
                       .beer-card-description {
@@ -279,7 +289,7 @@ export default {
                           line-height: 1.5;
                         }
                         @media screen and (max-width: 570px) {
-                          font-size: 11px;
+                          font-size: 10px;
                         }
                       }
 
@@ -457,6 +467,7 @@ export default {
       text-align: left;
       margin-bottom: 60px;
       line-height: 1.5;
+      max-width: 1100px;
       @media screen and (max-width: 991px) {
         font-size: 14px;
         margin-bottom: 40px;
@@ -577,6 +588,9 @@ export default {
               }
               @media screen and (max-width: 768px) {
                 font-size: 12px;
+              }
+              @media screen and (max-width: 570px) {
+                font-size: 10px;
               }
             }
 
