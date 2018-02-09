@@ -22,6 +22,7 @@ export default {
     .footer-inner {
       @include flexRowSp;
       width: 80%;
+      max-width: 1350px;
 
       .mf-lab, .mf-copyright {
         margin: 0;

@@ -62,6 +62,7 @@ export default {
       margin-bottom: 80px;
       text-align: left;
       line-height: 1.5;
+      max-width: 1100px;
       @media screen and (max-width: 991px) {
         font-size: 14px;
       }
@@ -80,6 +81,8 @@ export default {
       margin-bottom: 220px;
       position: relative;
       @include flexRowC;
+      max-width: 1600px;
+
       @media screen and (max-width: 991px) {
         margin-bottom: 140px;
       }
@@ -176,6 +179,9 @@ export default {
             }
             @media screen and (max-width: 768px) {
               font-size: 12px;
+            }
+            @media screen and (max-width: 570px) {
+              font-size: 10px;
             }
           }
         }

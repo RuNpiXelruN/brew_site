@@ -61,6 +61,7 @@ export default {
   #map {
     width: 80%;
     height: 550px;
+
     @media screen and (max-width: 991px) {
       height: 400px;
     }

@@ -10,14 +10,17 @@
     <slick ref="slick" class="mob-slick-wrapper" v-if="beers.length > 0" :options="slickOptions">
       <div class="mob-active-beer" v-for="(beer, index) in beers" :key="index">
         <div class="image-wrapper">
+          <div v-if="beer.status.name === 'active-empty'" class="runout runout-img"></div>
           <img class="mob-beer-image" :src="beer.image_url" alt="an image of a beer currently on tap">
         </div>
         <div class="text-wrapper">
           <div class="beer-title">
+            <div v-if="beer.status.name === 'active-empty'" class="runout"></div>
             <span class="beer-card-title">Title</span>
             <h3 class="beer-card-heading">{{beer.name}}</h3>
           </div>
           <div class="beer-description">
+            <div v-if="beer.status.name === 'active-empty'" class="runout"></div>
             <span class="beer-card-title">Description</span>
             <div class="description-flex">
               <p class="beer-card-description">{{beer.description}}</p>
@@ -282,6 +285,7 @@ export default {
         width: 100%;
         height: 450px;
         border: 4px solid $textColor;
+
         @media screen and (max-width: 768px) {
           height: 340px;
           width: 95% !important;
@@ -362,10 +366,14 @@ export default {
             }
           }
 
+          .beer-title, .beer-description {
+            position: relative;
+          }
+
           .beer-description {
             padding: 7% 5%;
             height: 70%;
-            width: 85%;
+            width: 100%;
 
             .description-flex {
               display: flex;
@@ -389,6 +397,29 @@ export default {
           }
         }
       }
+    }
+    .runout {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(255, 248, 226, 0.6);
+      border-top: 4px solid $textColor;
+
+      &.runout-img {
+        background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' preserveAspectRatio='none' viewBox='0 0 100 100'><path d='M1 0 L0 0 L100 100 L100 99' fill='#F57F17' /><path d='M0 100 L99 0 L100 0 L1 100' fill='#F57F17' /></svg>");
+        background-color: rgba(255, 248, 226, 0.6);
+        background-repeat:no-repeat;
+        background-position:center center;
+        background-size: 103% 103%, auto;
+        z-index: 2;
+        border-bottom: 4px solid $textColor;
+      }
+    }
+    .beer-description .runout {
+      border-top: 0;
+      border-bottom: 4px solid $textColor;
     }
   }
 </style>

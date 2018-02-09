@@ -10,6 +10,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "animate-scroll-to": "^0.0.2",
+    "animated-scroll-to": "^1.1.8",
     "axios": "^0.17.1",
     "form-data": "^2.3.1",
     "fs": "^0.0.1-security",
@@ -18,16 +20,18 @@
     "mapbox-gl-vue": "^1.7.0",
     "node-sass": "^4.7.2",
     "querystring": "^0.2.0",
-    "s3-browser-direct-upload": "^0.1.2",
     "sass-loader": "^6.0.6",
     "vue": "^2.5.2",
     "vue-easy-slider": "^3.1.7",
     "vue-flickity": "^1.0.9",
+    "vue-my-dropdown": "^2.1.0",
     "vue-router": "^3.0.1",
+    "vue-scroll-to": "^2.2.0",
     "vue-slick": "^1.1.12",
     "vuetify": "^0.17.6"
   },
   "devDependencies": {
+    "@profesia/vue-hamburger-menu-component": "^1.0.1",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",

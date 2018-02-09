@@ -44,6 +44,15 @@
   width: 100%;
 }
 
+@mixin flexColSp {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+
 @mixin h2Style {
   color: $textColor;
   font-family: "PoppinsSemiBold", sans-serif;

@@ -1,5 +1,5 @@
 <template>
-  <div class="now-brewing-wrapper">
+  <div id="nowBrewing" class="now-brewing-wrapper">
     <h2 class="status-heading">Now Brewing</h2>
     <p class="status-p">Mentally Fermented’s dedicated team of bootleggers are well known for pushing the boundaries of their craft, experimenting with all types of store bought hops, spices and woods to create unique, full flavoured beers.</p>
 
@@ -57,6 +57,7 @@ export default {
       margin-bottom: 60px;
       text-align: left;
       line-height: 1.5;
+      max-width: 1100px;
       @media screen and (max-width: 991px) {
         font-size: 14px;
         margin-bottom: 40px;
@@ -74,7 +75,9 @@ export default {
 
     .brewing-image-section {
       @include flexRowC;
-      margin: 6% 0;
+      margin: 6rem 0;
+      max-width: 1600px;
+
       @media screen and (max-width: 991px) {
         margin: 6% 0;
       }
@@ -83,6 +86,9 @@ export default {
       .brewing-beer {
         width: 22%;
         height: 32vw;
+        max-width: 320px;
+        max-height: 500px;
+
         @media screen and (max-width: 991px) {
           width: 30%;
           height: 48vw;
