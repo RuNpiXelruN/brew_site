@@ -118,26 +118,17 @@
           createBeerData.append('featured', this.featured)
           createBeerData.append('brewer_ids', this.selectedBrewers)
           createBeerData.append('status', this.selectedStatus)
-          //
+
           AppService.createBeer(createBeerData)
+          .then(response => {
+            if (response.Error) {
+              console.log("Error -> ", response.Error)
+            } else {
+              console.log("Create Success!", response.Success)
+            }
+          })
         }
       },
-      // submit () {
-      //   if (this.$refs.form.validate()) {
-      //     console.log("name", this.name);
-      //
-      //     var createBeerData = new FormData()
-      //     createBeerData.append('image', this.file, this.file.name)
-      //     createBeerData.append('name', this.name)
-      //     createBeerData.append('description', this.description)
-      //     createBeerData.append('alcohol_content', this.alcohol_content)
-      //     createBeerData.append('featured', this.featured)
-      //     createBeerData.append('brewer_ids', this.selectedBrewers)
-      //     createBeerData.append('status', this.selectedStatus)
-      //
-      //     AppService.createBeer(createBeerData)
-      //   }
-      // },
       clear () {
         this.$refs.form.reset()
         this.file = null
@@ -146,91 +137,5 @@
     }
   }
 </script>
-<style lang="css">
-  /* .create-beer-wrapper {
-    background-color: #FFF8E2;
-  } */
+<style lang="scss">
 </style>
-<!-- <template>
-  <div class="add-beer">
-    <h1>Add New Beer</h1>
-    <form class="create-form" ref="createBeerForm" v-on:submit.prevent="handleSubmit" method="post" enctype="multipart/form-data">
-      <label for="">Beer Name</label>
-      <input type="text" name="name" v-model="name">
-      <label for="">Description</label>
-      <textarea name="description" v-model="description" rows="8" cols="80"></textarea>
-      <label for="">Alc%</label>
-      <input type="number" name="alcohol_content" v-model="alcohol_content">
-      <label for="">Featured</label>
-      <input type="checkbox" name="featured" v-model="featured">
-      <label for="">Image</label>
-      <input type="file" ref="file" name="image" v-on:change="handleFileUpload">
-
-      <select multiple name="brewers[]" v-model="selectedBrewers">
-        <option v-for="brewer in brewers" :value="brewer.id" :key="brewer.id">{{ brewer.first_name }}</option>
-      </select>
-
-      <span>Selected: {{selectedBrewers}}</span>
-
-      <button type="submit" name="button">Submit</button>
-    </form>
-  </div>
-</template>
-<script>
-import AppService from '@/app.service.js'
-
-export default {
-  components: {},
-  props: [],
-  data() {
-    return {
-      file: '',
-      name: '',
-      description: '',
-      alcohol_content: null,
-      featured: false,
-      brewers: [],
-      selectedBrewers: []
-    }
-  },
-  created() {
-    this.getBrewers()
-  },
-  methods: {
-    getBrewers() {
-      AppService.getBrewerNames()
-      .then(data => {
-        var brews = data.data
-        for (var i=0; i < brews.length; i++) {
-          brews[i].id = brews[i].id + ""
-        }
-        this.brewers = brews
-      })
-    },
-    handleFileUpload() {
-      this.file = this.$refs.file.files[0]
-    },
-    handleSubmit() {
-      this.name = this.$refs.createBeerForm.name.value
-      this.description = this.$refs.description.value
-      var createBeerData = new FormData()
-
-      createBeerData.append('file', this.file, this.file.name)
-      createBeerData.append('name', this.name)
-      createBeerData.append('description', this.description)
-
-      AppService.imageTest(createBeerData)
-    }
-  },
-  watch: {}
-}
-</script>
-
-<style lang="css">
-  .create-form {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    width: 100%;
-  }
-</style> -->

@@ -48,6 +48,9 @@ export default {
     StatusBeers,
     MobSlider
   },
+  props: [
+    'authed'
+  ],
   data() {
     return {
       beers: [],
@@ -59,11 +62,7 @@ export default {
     }
   },
   mounted() {},
-  watch: {
-    beers() {
-      console.log("same?", this.beers);
-    }
-  }
+  watch: {}
 }
 </script>
 <style lang="scss">

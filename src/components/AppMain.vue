@@ -31,10 +31,10 @@
           </p>
         </div>
 
-        <on-tap />
-        <now-brewing />
-        <past-beers />
-        <next-brew-date />
+        <on-tap :authed="authed"/>
+        <now-brewing :authed="authed" />
+        <past-beers :authed="authed"/>
+        <next-brew-date :authed="authed"/>
       </div>
     </div>
   </div>
@@ -44,13 +44,16 @@
 
 // TODO add max-width to sliders and map
 // TODO optimize image sizes
-
+import AppService from '@/app.service.js'
 import NextBrewDate from '@/components/NextBrewDate.vue'
 import PastBeers from '@/components/Empty.vue'
 import NowBrewing from '@/components/NowBrewing.vue'
 import OnTap from '@/components/OnTap.vue'
 import MfMap from '@/components/MfMap.vue'
 export default {
+  props: [
+    'authed'
+  ],
   components: {
     OnTap,
     NowBrewing,
@@ -58,9 +61,17 @@ export default {
     NextBrewDate,
     MfMap
   },
+  data() {
+    return {}
+  },
   created() {},
   mounted() {},
-  methods: {}
+  methods: {},
+  watch: {
+    'authed'(newVal, oldVal) {
+      console.log(newVal, oldVal);
+    }
+  }
 }
 </script>
 

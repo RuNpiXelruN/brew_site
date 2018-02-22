@@ -32,13 +32,18 @@ const appService = {
   },
 
 
-  createBeer(data) {
-    axios.post(`/beers`, data, {
-      headers: {
-        'accept': 'application/json',
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+  async createBeer(data) {
+    try {
+      let result = await axios.post(`/beers`, data, {
+        headers: {
+          'accept': 'application/json',
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      return result.data
+    } catch(err) {
+      console.log("error: ", err)
+    }
   },
 
   uploadImage(data) {
@@ -52,11 +57,46 @@ const appService = {
     })
   },
 
-  async testAuth() {
+  async checkSession(token) {
     try {
-      await axios.get(`/auth`)
+      let result = await axios.post("/", "", {
+        headers: {
+          'accept': 'application/json',
+          'brewToken': token
+        }
+      })
+      return result.data
     } catch(err) {
-      console.log("Error: ", err);
+      console.log("error: ", err);
+    }
+  },
+
+  async login(data) {
+    var token = window.localStorage.getItem('brewToken') ? window.localStorage.getItem('brewToken') : ""
+    try {
+      let result = await axios.post(`/login`, data, {
+        headers: {
+          'accept': 'application/json',
+          'brewToken': token
+        }
+      })
+      return result.data
+    } catch(err) {
+      console.log("There was an error posting login details ", err)
+    }
+  },
+
+  async logout(token) {
+    try {
+      let result = await axios.post(`/logout`, "", {
+        headers: {
+          'accept': 'application/json',
+          'brewToken': token
+        }
+      })
+      return result.data
+    } catch (err) {
+      console.log("Error trying to logout: ", err);
     }
   }
 
