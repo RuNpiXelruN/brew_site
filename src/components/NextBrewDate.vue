@@ -37,9 +37,13 @@ export default {
   components: {
     MfMap
   },
+  props: [
+    'authed'
+  ],
   data() {
     return {}
-  }
+  },
+  watch: {}
 }
 </script>
 

@@ -48,6 +48,9 @@ export default {
     StatusBeers,
     Slick
   },
+  props: [
+    'authed'
+  ],
   data() {
     return {
       beers: [],

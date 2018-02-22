@@ -1,14 +1,15 @@
 <template>
   <v-app class="bgMain">
     <div id="app">
-      <Header/>
-      <router-view/>
+      <Header :authed="authed" v-on:auth="setAuth" />
+      <router-view :authed="authed" v-on:auth="setAuth" />
       <Footer />
     </div>
   </v-app>
 </template>
 
 <script>
+import AppService from './app.service.js'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 
@@ -17,7 +18,37 @@ export default {
   components: {
     Header,
     Footer
-  }
+  },
+  data() {
+    return {
+      authed: false
+    }
+  },
+  methods: {
+    checkSession() {
+      let token = window.localStorage.getItem("brewToken")
+      if (token) {
+        AppService.checkSession(token)
+        .then(result => {
+          if (result.Error) {
+            this.authed = false
+          } else if (result.Success) {
+            window.localStorage.setItem("brewToken", result.Success.brewToken)
+            this.authed = true
+          } else {
+            console.log("No active session");
+          }
+        })
+      }
+    },
+    setAuth(authStatus) {
+      this.authed = authStatus
+    }
+  },
+  created() {
+    this.checkSession()
+  },
+  watch: {}
 }
 </script>
 <style lang="scss">
@@ -28,6 +59,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  height: calc(100% - 74px);
 }
 
 body {

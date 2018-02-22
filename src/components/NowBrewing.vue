@@ -26,16 +26,20 @@ export default {
   components: {
     StatusBeers
   },
+  props: [
+    'authed'
+  ],
   data() {
     return {
-      beers: []
+      beers: [],
     }
   },
   methods: {
     setData(data) {
       this.beers = data
     }
-  }
+  },
+  watch: {}
 }
 </script>
 <style lang="scss">

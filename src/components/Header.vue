@@ -6,9 +6,10 @@
       <router-link :to="{ name: 'beers', query: {status: 'active', order: 'desc'} }">On Tap</router-link>
       <router-link :to="{ name: 'beers', query: {status: 'brewing', order: 'desc', limit: 1} }">Now Brewing</router-link>
       <router-link :to="{ name: 'beers', query: {status: 'empty', order: 'desc'} }">Off Tap</router-link>
-      <router-link :to="{ name: 'createBeer', query: {} }">Create Beer</router-link>
-      <router-link :to="{ name: 'imageupload', query: {} }">Upload Image</router-link>
-      <router-link :to="{ name: 'authTest', query: {} }">AuthTest</router-link>
+      <router-link :to="{ name: 'createBeer', query: {} }" v-if="this.authed">Create Beer</router-link>
+      <router-link :to="{ name: 'imageupload', query: {} }" v-if="this.authed">Upload Image</router-link>
+      <router-link :to="{ name: 'admin', query: {} }" v-if="!this.authed">Admin</router-link>
+      <a href="" @click.prevent="logout" v-if="this.authed">Logout</a>
     </div>
 
     <div class="nav-mobile">
@@ -27,8 +28,12 @@
 </template>
 
 <script>
+import AppService from '@/app.service.js'
 import vueScrollTo from 'vue-scroll-to'
 export default {
+  props: [
+    'authed',
+  ],
   components: {
   },
   data() {
@@ -37,11 +42,26 @@ export default {
     }
   },
   methods: {
-    test() {},
+    logout() {
+      let token = window.localStorage.getItem("brewToken")
+      if (token) {
+        AppService.logout(token)
+        .then(result => {
+          if (result.Error) {
+            console.log("Error trying to logout", result.Error.status_text);
+          } else if (result.Success) {
+            this.$router.push("/")
+            this.$emit("auth", false)
+            window.localStorage.removeItem("brewToken")
+          }
+        })
+      }
+    },
     toggleNav() {
       this.isActive = !this.isActive
     }
-  }
+  },
+  created() {}
 }
 </script>
 <style lang="scss">
