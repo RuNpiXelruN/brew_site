@@ -30,10 +30,10 @@ export default {
       if (token) {
         AppService.checkSession(token)
         .then(result => {
-          if (result.Error) {
+          if (result.error) {
             this.authed = false
-          } else if (result.Success) {
-            window.localStorage.setItem("brewToken", result.Success.brewToken)
+          } else if (result.success) {
+            window.localStorage.setItem("brewToken", result.success.brewToken)
             this.authed = true
           } else {
             console.log("No active session");

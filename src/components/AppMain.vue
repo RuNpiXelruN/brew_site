@@ -67,11 +67,7 @@ export default {
   created() {},
   mounted() {},
   methods: {},
-  watch: {
-    'authed'(newVal, oldVal) {
-      console.log(newVal, oldVal);
-    }
-  }
+  watch: {}
 }
 </script>
 

@@ -24,8 +24,8 @@ const appService = {
 
   async getBrewerNames() {
     try {
-      let data = await axios.get(`/brewers/names`)
-      return data
+      let result = await axios.get(`/brewers/names`)
+      return result.data
     } catch(err) {
       console.log("error: ", err)
     }
@@ -62,7 +62,7 @@ const appService = {
       let result = await axios.post("/", "", {
         headers: {
           'accept': 'application/json',
-          'brewToken': token
+          'auth_token': token
         }
       })
       return result.data
@@ -72,12 +72,12 @@ const appService = {
   },
 
   async login(data) {
-    var token = window.localStorage.getItem('brewToken') ? window.localStorage.getItem('brewToken') : ""
+    var token = window.localStorage.getItem('auth_token') ? window.localStorage.getItem('auth_token') : ""
     try {
       let result = await axios.post(`/login`, data, {
         headers: {
           'accept': 'application/json',
-          'brewToken': token
+          'auth_token': token
         }
       })
       return result.data
@@ -91,12 +91,26 @@ const appService = {
       let result = await axios.post(`/logout`, "", {
         headers: {
           'accept': 'application/json',
-          'brewToken': token
+          'auth_token': token
         }
       })
       return result.data
     } catch (err) {
       console.log("Error trying to logout: ", err);
+    }
+  },
+
+  async checkAdminEmail(data) {
+    try {
+      let result = await axios.post(`/validateOAuth`, data, {
+        withCredentials: true,
+        headers: {
+          'accept': 'application/json'
+        }
+      })
+      return result.data
+    } catch(err) {
+      console.log("Error from async: ", err);
     }
   }
 

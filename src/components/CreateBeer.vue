@@ -89,15 +89,21 @@
     methods: {
       getBrewerNames() {
         AppService.getBrewerNames()
-        .then(data => {
-          var brews = data.data
-          var brewsNew = brews.map((brewer) => {
-            return {
-              value: brewer.id,
-              text: `${brewer.first_name} ${brewer.last_name}`
-            }
-          })
-          this.brewers = brewsNew
+        .then(result => {
+          if (result.error) {
+            console.log("Error fetching brewer names: ", result.error.status_text);
+          } else if (result.success) {
+            var brews = result.success.data
+            var brewsNew = brews.map((brewer) => {
+              return {
+                value: brewer.id,
+                text: `${brewer.first_name} ${brewer.last_name}`
+              }
+            })
+            this.brewers = brewsNew
+          } else {
+            console.log("Something went wrong setting brewer names :(");
+          }
         })
       },
       handleFileUpload() {
@@ -120,11 +126,14 @@
           createBeerData.append('status', this.selectedStatus)
 
           AppService.createBeer(createBeerData)
-          .then(response => {
-            if (response.Error) {
-              console.log("Error -> ", response.Error)
+          .then(result => {
+            if (result.error) {
+              console.log("Error -> ", result.error)
+            } else if (result.success){
+              this.$refs.form.reset()
+              console.log("Create Success!", result.success.data)
             } else {
-              console.log("Create Success!", response.Success)
+              console.log("Something went wrong :(");
             }
           })
         }

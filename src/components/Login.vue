@@ -30,6 +30,14 @@
             </v-form>
           </v-card-text>
         </v-card>
+
+        <g-signin-button
+          :params="googleSignInParams"
+          @success="handleSuccess"
+          @error="handleError">
+          Sign In with Google
+        </g-signin-button>
+
       </v-flex>
     </v-layout>
   </div>
@@ -47,10 +55,29 @@ export default {
         (v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
       ],
       password: '',
-      pwd: true
+      pwd: true,
+      googleSignInParams: {
+        client_id: `${process.env.GOOGLE_CLIENT_ID}.apps.googleusercontent.com`
+      }
     }
   },
   methods: {
+    handleSuccess(userInfo) {
+      var data = new FormData
+      data.append("email", userInfo.w3.U3)
+      AppService.checkAdminEmail(data)
+        .then(result => {
+          this.handleAuthResult(result)
+        })
+    },
+    handleError(err) {
+      console.log("Error logging in: ", err);
+    },
+    googleLogin() {
+      Vue.googleAuth().signIn(function(authCode) {
+        console.log("authCode: ", authCode);
+      })
+    },
     handleSubmit() {
       // TODO success and redirect
       if (this.$refs.form.validate()) {
@@ -61,20 +88,23 @@ export default {
 
         AppService.login(data)
         .then(result => {
-          if (result.Error) {
-            this.$emit("auth", false)
-          } else if (result.Success) {
-            this.$emit("auth", true)
-            this.$router.push("/")
-            window.localStorage.setItem("brewToken", result.Success.brewToken)
-          } else {
-            this.$emit("auth", false)
-          }
+          this.handleAuthResult(result)
         })
       }
     },
     clear() {
       this.$refs.form.reset()
+    },
+    handleAuthResult(result) {
+      if (result.error) {
+        this.$emit("auth", false)
+      } else if (result.success) {
+        this.$emit("auth", true)
+        this.$router.push("/")
+        window.localStorage.setItem("auth_token", result.success.auth_token)
+      } else {
+        this.$emit("auth", false)
+      }
     }
   }
 }
