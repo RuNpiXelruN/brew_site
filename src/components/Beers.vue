@@ -31,10 +31,10 @@ export default {
       } else {
         AppService.getBeers(this.limit, this.order, this.offset)
         .then(result => {
-          if (result.Error) {
-            console.log(result.Error)
+          if (result.error) {
+            console.log(result.error)
           } else {
-            this.beers = result.Success
+            this.beers = result.success
           }
         })
       }

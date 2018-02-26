@@ -43,16 +43,16 @@ export default {
   },
   methods: {
     logout() {
-      let token = window.localStorage.getItem("brewToken")
+      let token = window.localStorage.getItem("auth_token")
       if (token) {
         AppService.logout(token)
         .then(result => {
-          if (result.Error) {
-            console.log("Error trying to logout", result.Error.status_text);
-          } else if (result.Success) {
+          if (result.error) {
+            console.log("Error trying to logout", result.error.status_text);
+          } else if (result.success) {
             this.$router.push("/")
             this.$emit("auth", false)
-            window.localStorage.removeItem("brewToken")
+            window.localStorage.removeItem("auth_token")
           }
         })
       }
