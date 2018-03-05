@@ -7,6 +7,7 @@
       <router-link :to="{ name: 'beers', query: {status: 'brewing', order: 'desc', limit: 1} }">Now Brewing</router-link>
       <router-link :to="{ name: 'beers', query: {status: 'empty', order: 'desc'} }">Off Tap</router-link>
       <router-link :to="{ name: 'createBeer', query: {} }" v-if="this.authed">Create Beer</router-link>
+      <router-link :to="{ name: 'createBrewer', query: {} }">Create Brewer</router-link>
       <router-link :to="{ name: 'imageupload', query: {} }" v-if="this.authed">Upload Image</router-link>
       <router-link :to="{ name: 'admin', query: {} }" v-if="!this.authed">Admin</router-link>
       <a href="" @click.prevent="logout" v-if="this.authed">Logout</a>

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import AppMain from '@/components/AppMain'
 import Beers from '@/components/Beers'
 import CreateBeer from '@/components/CreateBeer'
+import CreateBrewer from '@/components/CreateBrewer'
 import ImageUploader from '@/components/ImageUploader'
 import Login from '@/components/Login'
 import AppService from '@/app.service'
@@ -34,6 +35,11 @@ export var router = new Router({
       secure: true,
       name: 'createBeer',
       component: CreateBeer
+    },
+    {
+      path: '/brewers/new',
+      name: 'createBrewer',
+      component: CreateBrewer
     },
     {
       path: '/imageupload',
