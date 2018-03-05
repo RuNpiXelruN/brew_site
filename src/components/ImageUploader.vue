@@ -22,6 +22,15 @@ export default {
       imageData.append('image', this.file, this.file.name)
 
       AppService.uploadImage(imageData)
+      .then(result => {
+        if (result.error) {
+          console.log("There was an error uploading your image", err);
+        } else if (result.success) {
+          console.log("Successfully uploaded image");
+        } else {
+          console.log("Something went wrong :(");
+        }
+      })
     }
   }
 }

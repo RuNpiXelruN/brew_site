@@ -22,6 +22,15 @@ const appService = {
     }
   },
 
+  async getBasicBeers() {
+    try {
+      let result = await axios.get(`/beers/basic`)
+      return result.data
+    } catch(err) {
+      console.log("Error fetching basic beers");
+    }
+  },
+
   async getBrewerNames() {
     try {
       let result = await axios.get(`/brewers/names`)
@@ -33,11 +42,14 @@ const appService = {
 
 
   async createBeer(data) {
+    let token = window.localStorage.getItem('auth_token')
     try {
       let result = await axios.post(`/beers`, data, {
+        withCredentials: true,
         headers: {
           'accept': 'application/json',
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          'auth_token': token
         }
       })
       return result.data
@@ -46,15 +58,36 @@ const appService = {
     }
   },
 
-  uploadImage(data) {
-    return new Promise((resolve, reject) => {
-      axios.post(`/beers/newimage`, data, {
+  async createBrewer(data) {
+    let token = window.localStorage.getItem("auth_token")
+    try {
+      let result = await axios.post("/brewers", data, {
+        withCredentials: true,
         headers: {
           'accept': 'application/json',
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'auth_token': token
         }
       })
-    })
+      console.log("RESSSS", result);
+    } catch(err) {
+      console.log("There was an erro creating brewer", err);
+    }
+  },
+
+  async uploadImage(data) {
+    let token = window.localStorage.getItem("auth_token")
+    try {
+      let result = await axios.post(`/beers/newimage`, data, {
+        headers: {
+          'accept': 'application/json',
+          'Content-Type': 'multipart/form-data',
+          'auth_token': token
+        }
+      })
+    } catch(err) {
+      console.log("There was an error uploading the image");
+    }
   },
 
   async checkSession(token) {
@@ -111,6 +144,15 @@ const appService = {
       return result.data
     } catch(err) {
       console.log("Error from async: ", err);
+    }
+  },
+
+  async getBrewerRanks() {
+    try {
+      let result = await axios.get(`/ranks`)
+      return result.data
+    } catch(err) {
+      console.log("There was an error fetching ranks", err);
     }
   }
 

@@ -26,17 +26,19 @@ export default {
   },
   methods: {
     checkSession() {
-      let token = window.localStorage.getItem("brewToken")
+      let token = window.localStorage.getItem("auth_token")
       if (token) {
         AppService.checkSession(token)
         .then(result => {
           if (result.error) {
             this.authed = false
-          } else if (result.success) {
-            window.localStorage.setItem("brewToken", result.success.brewToken)
+            window.localStorage.removeItem("auth_token")
+            return
+          }
+          if (result.success) {
+            window.localStorage.setItem("auth_token", result.success.auth_token)
             this.authed = true
-          } else {
-            console.log("No active session");
+            return
           }
         })
       }
