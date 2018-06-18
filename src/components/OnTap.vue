@@ -5,28 +5,33 @@
       <p class="status-p">We maintain 1-3 beers on tap, which are constantly changing to satisfy the never-ending thirst of our cicerones.</p>
 
       <div class="active-beers-section">
-        <div class="active-beer" v-for="beer in beers" v-bind:key="beers.id">
+        <div class="active-beer" v-for="(beer, index) in beers" v-bind:key="beer.id">
           <div class="image-container">
-            <div v-if="beer.status.name === 'active-empty'" class="runout runout-img"></div>
+            <div v-if="beer.status === 'active-empty'" class="runout runout-img"></div>
             <img v-bind:src="beer.image_url" alt="image of currently active beer" class="beer-card-image">
           </div>
 
           <div class="beer-title-wrapper">
-            <div v-if="beer.status.name === 'active-empty'" class="runout"></div>
+            <div v-if="beer.status === 'active-empty'" class="runout"></div>
             <span class="beer-card-title">Title</span>
             <h3 class="beer-card-heading">{{beer.name}}</h3>
           </div>
 
           <div class="beer-description-wrapper">
-            <div v-if="beer.status.name === 'active-empty'" class="runout"></div>
+            <div v-if="beer.status === 'active-empty'" class="runout"></div>
             <span class="beer-card-title">Description</span>
             <div class="desc-flex">
               <p class="beer-card-description">{{beer.description}}</p>
               <span>{{beer.alcohol_content}} ABV</span>
             </div>
+            <button v-if="authed" v-on:click.prevent="btnClick(index)" type="button" name="button">Update</button>
+
+            <router-link v-if="authed" :to="{name: 'editBeer', params: {id: `${beer.id}`}}">Edit</router-link>
           </div>
         </div>
       </div>
+
+      <edit-beer-component :beer="beerToEdit" v-on:clearupdate="clearUpdate"/>
 
       <!-- TODO add alt tags to images -->
       <!-- TODO add empty class to mob slider beers on tap -->
@@ -41,12 +46,15 @@
 </template>
 
 <script>
+// TODO add 'runout' class to mob slider
 import MobSlider from '@/components/MobSlider.vue'
 import StatusBeers from '@/components/StatusBeers.vue'
+import EditBeerComponent from '@/components/EditBeerComponent'
 export default {
   components: {
     StatusBeers,
-    MobSlider
+    MobSlider,
+    EditBeerComponent
   },
   props: [
     'authed'
@@ -54,9 +62,18 @@ export default {
   data() {
     return {
       beers: [],
+      beerToEdit: {}
     }
   },
   methods: {
+    btnClick(index) {
+      if (index) {
+        this.beerToEdit = this.beers[index]
+      }
+    },
+    clearUpdate(value) {
+      this.beerToEdit = value
+    },
     setData(data) {
       this.beers = data
     }

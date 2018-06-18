@@ -36,7 +36,7 @@
       </slick>
     </div>
 
-    <status-beers status="empty" order="desc" v-on:data="setData"></status-beers>
+    <status-beers status="past" order="desc" v-on:data="setData"></status-beers>
   </div>
 </template>
 

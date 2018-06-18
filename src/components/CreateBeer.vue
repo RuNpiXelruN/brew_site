@@ -35,8 +35,6 @@
 
               <h3>{{selectedStatus}}</h3>
 
-              <v-checkbox v-bind:label="`Featured?`" v-model="featured" light></v-checkbox>
-
               <v-select
                 class="testtttt"
                 style="background: white;"
@@ -51,6 +49,8 @@
                 v-model="selectedBrewers">
               </v-select>
 
+              <v-checkbox class="featured-checkbox" v-bind:label="`Featured?`" v-model="featured" light></v-checkbox>
+
               <picture-input
                 ref="pictureInput"
                 class="picUploader"
@@ -63,7 +63,7 @@
                 buttonClass="btn"
                 :customStrings="{
                   upload: '<h1>Bummer!</h1>',
-                  drag: 'Drag Image Here'
+                  drag: `<p>Drag an image or<br>click to select a file</p>`
                 }">
               </picture-input>
 
@@ -106,7 +106,7 @@
     created() {
       this.getBrewerNames()
     },
-    watcher: {},
+    watch: {},
     methods: {
       showPicChange(image) {
         if (image) {
@@ -139,7 +139,6 @@
             createBeerData.append('image', this.file, this.file.name)
           }
           createBeerData.append('name', this.name)
-          createBeerData.append('name', this.name)
           createBeerData.append('description', this.description)
           createBeerData.append('alcohol_content', this.alcohol_content)
           createBeerData.append('featured', this.featured)
@@ -152,6 +151,9 @@
               console.log("Error -> ", result.error)
             } else if (result.success){
               this.$refs.form.reset()
+              this.file = null
+              this.$refs.pictureInput.removeImage()
+              this.$router.push("/")
               console.log("Create Success!", result.success.data)
             } else {
               console.log("Something went wrong :(");
@@ -171,6 +173,10 @@
   .create-beer-wrapper {
     @include flexRowC;
     min-height: calc(100% - 74px);
+
+    .featured-checkbox {
+      margin-top: 20px;
+    }
 
     #picture-input {
       margin-top: 50px;

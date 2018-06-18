@@ -1,12 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import AppMain from '@/components/AppMain'
-import Beers from '@/components/Beers'
-import CreateBeer from '@/components/CreateBeer'
-import CreateBrewer from '@/components/CreateBrewer'
-import ImageUploader from '@/components/ImageUploader'
-import Login from '@/components/Login'
-import AppService from '@/app.service'
+
+// Lazy loading components below
+const ImageUploader = () => System.import('@/components/ImageUploader')
+const CreateBeer = () => System.import('@/components/CreateBeer')
+const CreateBrewer = () => System.import('@/components/CreateBrewer')
+const Beers = () => System.import('@/components/Beers')
+const AppMain = () => System.import('@/components/AppMain')
+const Login = () => System.import('@/components/Login')
+const EditBeer = () => System.import('@/components/EditBeer')
 
 import vueScrollTo from 'vue-scroll-to';
 import GSignInButton from 'vue-google-signin-button'
@@ -38,6 +40,7 @@ export var router = new Router({
     },
     {
       path: '/brewers/new',
+      secure: true,
       name: 'createBrewer',
       component: CreateBrewer
     },
@@ -52,6 +55,11 @@ export var router = new Router({
       secure: true,
       name: 'admin',
       component: Login
+    },
+    {
+      path: '/beers/:id/edit',
+      name: "editBeer",
+      component: EditBeer
     }
   ]
 })

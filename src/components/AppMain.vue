@@ -20,7 +20,6 @@
     </div>
 
 
-
     <div class="about-fermented">
 
       <div class="status-wrapper">
@@ -41,12 +40,12 @@
 </template>
 
 <script>
-
+import PictureInput from 'vue-picture-input'
 // TODO add max-width to sliders and map
 // TODO optimize image sizes
 import AppService from '@/app.service.js'
 import NextBrewDate from '@/components/NextBrewDate.vue'
-import PastBeers from '@/components/Empty.vue'
+import PastBeers from '@/components/Past.vue'
 import NowBrewing from '@/components/NowBrewing.vue'
 import OnTap from '@/components/OnTap.vue'
 import MfMap from '@/components/MfMap.vue'
@@ -59,7 +58,8 @@ export default {
     NowBrewing,
     PastBeers,
     NextBrewDate,
-    MfMap
+    MfMap,
+    PictureInput
   },
   data() {
     return {}

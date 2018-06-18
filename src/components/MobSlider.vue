@@ -165,8 +165,6 @@ export default {
       width: 100%;
 
       .slick-list .slick-track {
-        .slick-slide {
-        }
         #slick-slide00 {
           .image-wrapper {
             background-image: url("https://brew-site.s3-ap-southeast-2.amazonaws.com/large-dots-bg.svg");
