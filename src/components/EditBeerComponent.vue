@@ -70,7 +70,7 @@
 
 <script>
 import PictureInput from 'vue-picture-input'
-import AppService from '@/app.service.js'
+import AppService from '@/api/app.service.js'
 export default {
   props: ['beer'],
   components: {

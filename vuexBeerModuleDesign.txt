@@ -1,0 +1,22 @@
+State
+brewingBeers null
+activeBeers null
+pastBeers null
+
+
+Getters
+allBrewingBeers -> state.brewingBeers
+allActiveBeers -> state.activeBeers
+allPastBeers -> state.pastBeers
+
+
+Actions
+fetchBrewingBeers -> setBrewingBeers
+fetchActiveBeers -> setActiveBeers
+fetchPastBeers -> setPastBeers
+
+
+Mutations
+setBrewingBeers
+setActiveBeers
+setPastBeers

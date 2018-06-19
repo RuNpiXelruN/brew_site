@@ -16,7 +16,6 @@
               <v-text-field
                 label="Enter a password"
                 v-model="password"
-                type="password"
                 hint="Atleast 8 characters in length"
                 min="8"
                 :append-icon="pwd ? 'visibility_off' : 'visibility'"
@@ -44,7 +43,7 @@
 </template>
 
 <script>
-import AppService from '@/app.service.js'
+import AppService from '@/api/app.service.js'
 export default {
   data() {
     return {

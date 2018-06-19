@@ -5,7 +5,7 @@
       <p class="status-p">We maintain 1-3 beers on tap, which are constantly changing to satisfy the never-ending thirst of our cicerones.</p>
 
       <div class="active-beers-section">
-        <div class="active-beer" v-for="(beer, index) in beers" v-bind:key="beer.id">
+        <div class="active-beer" v-for="(beer, index) in activeBeers" v-bind:key="beer.id">
           <div class="image-container">
             <div v-if="beer.status === 'active-empty'" class="runout runout-img"></div>
             <img v-bind:src="beer.image_url" alt="image of currently active beer" class="beer-card-image">
@@ -38,21 +38,17 @@
       <div class="active-beers-mob">
         <mob-slider :beers="beers" />
       </div>
-
     </div>
-
-    <status-beers status="active" limit="3" order="desc" v-on:data="setData"></status-beers>
   </div>
 </template>
 
 <script>
 // TODO add 'runout' class to mob slider
 import MobSlider from '@/components/MobSlider.vue'
-import StatusBeers from '@/components/StatusBeers.vue'
 import EditBeerComponent from '@/components/EditBeerComponent'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
-    StatusBeers,
     MobSlider,
     EditBeerComponent
   },
@@ -65,7 +61,11 @@ export default {
       beerToEdit: {}
     }
   },
+  computed: {
+      ...mapGetters(['activeBeers'])
+  },
   methods: {
+    ...mapActions(['fetchActiveBeers']),
     btnClick(index) {
       if (index) {
         this.beerToEdit = this.beers[index]
@@ -74,9 +74,9 @@ export default {
     clearUpdate(value) {
       this.beerToEdit = value
     },
-    setData(data) {
-      this.beers = data
-    }
+  },
+  created() {
+      this.fetchActiveBeers({status: "active", limit: "3", order: "desc"})
   },
   mounted() {},
   watch: {}

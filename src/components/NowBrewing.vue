@@ -5,39 +5,37 @@
 
     <div class="brewing-image-section">
 
-      <div class="brewing-beer" v-for="beer in beers" v-bind:key="beers.id">
+      <div class="brewing-beer" v-for="beer in brewingBeers" v-bind:key="beer.id">
         <div class="beer-keg">
           <div class="inner-card-wrapper">
             <h3 class="beer-card-heading">{{beer.name}}</h3>
           </div>
-          <!-- <p>{{beer.description}}</p> -->
         </div>
       </div>
-
     </div>
 
-    <status-beers status="brewing" limit="2" order="desc" v-on:data="setData"></status-beers>
   </div>
 </template>
 
 <script>
-import StatusBeers from '@/components/StatusBeers.vue'
+import { mapActions, mapGetters } from 'vuex';
 export default {
-  components: {
-    StatusBeers
-  },
+  components: {},
   props: [
     'authed'
   ],
   data() {
-    return {
-      beers: [],
+    return {        
     }
   },
+  computed: {
+      ...mapGetters(['brewingBeers'])
+  },
   methods: {
-    setData(data) {
-      this.beers = data
-    }
+    ...mapActions(['fetchBrewingBeers'])
+  },
+  created() {
+      this.fetchBrewingBeers({status: "brewing", limit: "2", order: "desc"})
   },
   watch: {}
 }

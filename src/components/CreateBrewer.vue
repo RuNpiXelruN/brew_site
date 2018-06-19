@@ -47,7 +47,7 @@
   </div>
 </template>
 <script>
-import AppService from '@/app.service.js'
+import AppService from '@/api/app.service.js'
 export default {
   data() {
     return {

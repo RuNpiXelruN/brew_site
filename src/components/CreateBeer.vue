@@ -43,7 +43,6 @@
                 multiple
                 single-line
                 auto
-                append-icon=""
                 hide-details
                 append-icon="arrow_drop_down"
                 v-model="selectedBrewers">
@@ -79,7 +78,7 @@
 </template>
 
 <script>
-  import AppService from '@/app.service.js'
+  import AppService from '@/api/app.service.js'
   import PictureInput from 'vue-picture-input'
   export default {
     components: {
