@@ -43,7 +43,7 @@
 import PictureInput from 'vue-picture-input'
 // TODO add max-width to sliders and map
 // TODO optimize image sizes
-import AppService from '@/app.service.js'
+import AppService from '@/api/app.service.js'
 import NextBrewDate from '@/components/NextBrewDate.vue'
 import PastBeers from '@/components/Past.vue'
 import NowBrewing from '@/components/NowBrewing.vue'

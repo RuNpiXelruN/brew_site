@@ -12,8 +12,8 @@
         <div class="arrow-right"></div>
       </div>
 
-      <slick ref="slick" v-if="beers.length > 0" :options="slickOptions">
-        <div class="past-beer" v-for="(beer, index) in beers" :key="index">
+      <slick ref="slick" v-if="!!pastBeers.length" :options="slickOptions">          
+        <div class="past-beer" v-for="beer in pastBeers" :key="beer.id">
           <div class="image-wrapper" v-bind:style="{ backgroundImage: 'url(' + beer.image_url + ')' }"></div>
           <div class="text-wrapper">
               <div class="placeholder-div"></div>
@@ -35,17 +35,14 @@
         </div>
       </slick>
     </div>
-
-    <status-beers status="past" order="desc" v-on:data="setData"></status-beers>
   </div>
 </template>
 
 <script>
 import Slick from 'vue-slick'
-import StatusBeers from '@/components/StatusBeers.vue'
+import { mapActions, mapGetters } from 'vuex';
 export default {
   components: {
-    StatusBeers,
     Slick
   },
   props: [
@@ -53,7 +50,6 @@ export default {
   ],
   data() {
     return {
-      beers: [],
       slickOptions: {
         arrows: false,
         dots: true,
@@ -73,17 +69,21 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters(['pastBeers'])
+  },
   methods: {
+    ...mapActions(['fetchPastBeers']),  
     next() {
       this.$refs.slick.next()
     },
     prev() {
       this.$refs.slick.prev()
-    },
-    setData(data) {
-      this.beers = data
     }
-  }
+  },
+  created() {
+      this.fetchPastBeers({status: "past", order: "desc"})
+  },
 }
 </script>
 

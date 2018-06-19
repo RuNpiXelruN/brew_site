@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import AppService from '@/app.service.js'
+import AppService from '@/api/app.service.js'
 import vueScrollTo from 'vue-scroll-to'
 export default {
   props: [

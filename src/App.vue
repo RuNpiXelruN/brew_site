@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import AppService from './app.service.js'
+import AppService from './api/app.service.js'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 
