@@ -2,7 +2,7 @@
   <div class="navWrapper">
     <div class="navContainer">
       <router-link to="/" >Home</router-link>
-      <router-link :to="{ name: 'beers', params: {}, query: {limit: 2, order: 'desc'} }">All Beers</router-link>
+      <!-- <router-link :to="{ name: 'beers', params: {}, query: {limit: 2, order: 'desc'} }">All Beers</router-link>
       <router-link :to="{ name: 'beers', query: {status: 'active', order: 'desc'} }">On Tap</router-link>
       <router-link :to="{ name: 'beers', query: {status: 'brewing', order: 'desc', limit: 1} }">Now Brewing</router-link>
       <router-link :to="{ name: 'beers', query: {status: 'empty', order: 'desc'} }">Off Tap</router-link>
@@ -10,10 +10,10 @@
       <router-link :to="{ name: 'createBrewer', query: {} }">Create Brewer</router-link>
       <router-link :to="{ name: 'imageupload', query: {} }" v-if="this.authed">Upload Image</router-link>
       <router-link :to="{ name: 'admin', query: {} }" v-if="!this.authed">Admin</router-link>
-      <a href="" @click.prevent="logout" v-if="this.authed">Logout</a>
+      <a href="" @click.prevent="logout" v-if="this.authed">Logout</a> -->
     </div>
 
-    <div class="nav-mobile">
+    <!-- <div class="nav-mobile">
       <div class="dropdown-bg" :class="{active: isActive}" @click="toggleNav"></div>
       <span class="hamburger" @click="toggleNav" style="z-index: 999"><img src="/src/assets/img/nav-hamburger.png" alt="mobile hamburger navigation icon"/></span>
       <div ref="navdropdown" class="mob-nav-items" :class="{active: isActive}">
@@ -24,43 +24,43 @@
           <li class="nav-li" v-scroll-to="'#map, 50px'" @click.prevent="toggleNav"><a href="#">Get involved!</a></li>
         </ul>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-import AppService from '@/api/app.service.js'
+// import AppService from '@/api/app.service.js'
 import vueScrollTo from 'vue-scroll-to'
 export default {
   props: [
-    'authed',
+    // 'authed',
   ],
   components: {
   },
   data() {
     return {
-      isActive: false
+    //   isActive: false
     }
   },
   methods: {
-    logout() {
-      let token = window.localStorage.getItem("auth_token")
-      if (token) {
-        AppService.logout(token)
-        .then(result => {
-          if (result.error) {
-            console.log("Error trying to logout", result.error.status_text);
-          } else if (result.success) {
-            this.$router.push("/")
-            this.$emit("auth", false)
-            window.localStorage.removeItem("auth_token")
-          }
-        })
-      }
-    },
-    toggleNav() {
-      this.isActive = !this.isActive
-    }
+    // logout() {
+    //   let token = window.localStorage.getItem("auth_token")
+    //   if (token) {
+    //     AppService.logout(token)
+    //     .then(result => {
+    //       if (result.error) {
+    //         console.log("Error trying to logout", result.error.status_text);
+    //       } else if (result.success) {
+    //         this.$router.push("/")
+    //         this.$emit("auth", false)
+    //         window.localStorage.removeItem("auth_token")
+    //       }
+    //     })
+    //   }
+    // },
+    // toggleNav() {
+    //   this.isActive = !this.isActive
+    // }
   },
   created() {}
 }

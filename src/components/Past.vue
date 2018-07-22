@@ -12,8 +12,8 @@
         <div class="arrow-right"></div>
       </div>
 
-      <slick ref="slick" v-if="!!pastBeers.length" :options="slickOptions">          
-        <div class="past-beer" v-for="beer in pastBeers" :key="beer.id">
+      <slick ref="slick" v-if="!!beers.length" :options="slickOptions">          
+        <div class="past-beer" v-for="beer in beers" :key="beer.id">
           <div class="image-wrapper" v-bind:style="{ backgroundImage: 'url(' + beer.image_url + ')' }"></div>
           <div class="text-wrapper">
               <div class="placeholder-div"></div>
@@ -40,14 +40,13 @@
 
 <script>
 import Slick from 'vue-slick'
-import { mapActions, mapGetters } from 'vuex';
+import { statusBeersMixin } from '../mixins/statusBeersMixin'
 export default {
+    mixins: [statusBeersMixin("past")],
   components: {
     Slick
   },
-  props: [
-    'authed'
-  ],
+  props: [],
   data() {
     return {
       slickOptions: {
@@ -69,20 +68,14 @@ export default {
       }
     }
   },
-  computed: {
-    ...mapGetters(['pastBeers'])
-  },
+  created() {},
   methods: {
-    ...mapActions(['fetchPastBeers']),  
     next() {
       this.$refs.slick.next()
     },
     prev() {
       this.$refs.slick.prev()
     }
-  },
-  created() {
-      this.fetchPastBeers({status: "past", order: "desc"})
   },
 }
 </script>
@@ -205,7 +198,7 @@ export default {
                       color: $textColor;
                       font-size: 14px;
                       font-family: "PoppinsRegular", sans-serif;
-                      margin-bottom: 0px;
+                      margin-bottom: 0px;                      
                       @media screen and (max-width: 991px) {
                         font-size: 12px;
                       }
@@ -219,6 +212,7 @@ export default {
                     }
                     .beer-card-heading {
                       @include h3Style;
+                                      
                       @media screen and (max-width: 991px) {
                         font-size: 18px;
                       }
@@ -228,9 +222,10 @@ export default {
                       @media screen and (max-width: 570px) {
                         font-size: 13px;
                       }
+                     
                     }
                   }
-                  .beer-description-wrapper {
+                  .beer-description-wrapper {                      
 
                     @media screen and (max-width: 768px) {
                       padding: 7% 5%;
@@ -531,7 +526,7 @@ export default {
           }
 
           .beer-card-heading {
-            @include h3Style;
+            @include h3Style;            
             @media screen and (max-width: 991px) {
               font-size: 18px;
             }

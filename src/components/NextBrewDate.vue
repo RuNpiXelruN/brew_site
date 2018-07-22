@@ -38,7 +38,7 @@ export default {
     MfMap
   },
   props: [
-    'authed'
+    // 'authed'
   ],
   data() {
     return {}

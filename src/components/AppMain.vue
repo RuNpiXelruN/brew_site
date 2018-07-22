@@ -1,5 +1,6 @@
 <template>
   <div class="app-main">
+    <router-view/>
     <div class="hero-section">
 
       <img class="hero-logo" src="/src/assets/img/fermented-logo.png" alt="mentally fermented logo">
@@ -30,10 +31,14 @@
           </p>
         </div>
 
-        <on-tap :authed="authed"/>
+        <!-- <on-tap :authed="authed"/>
         <now-brewing :authed="authed" />
         <past-beers :authed="authed"/>
-        <next-brew-date :authed="authed"/>
+        <next-brew-date :authed="authed"/> -->
+        <on-tap/>
+        <now-brewing/>
+        <past-beers/>
+        <next-brew-date/>
       </div>
     </div>
   </div>
@@ -43,15 +48,17 @@
 import PictureInput from 'vue-picture-input'
 // TODO add max-width to sliders and map
 // TODO optimize image sizes
-import AppService from '@/api/app.service.js'
+// import AppService from '@/api/app.service.js'
 import NextBrewDate from '@/components/NextBrewDate.vue'
 import PastBeers from '@/components/Past.vue'
 import NowBrewing from '@/components/NowBrewing.vue'
 import OnTap from '@/components/OnTap.vue'
 import MfMap from '@/components/MfMap.vue'
+
+// import { mapActions } from 'vuex';
 export default {
   props: [
-    'authed'
+    // 'authed'
   ],
   components: {
     OnTap,
@@ -64,9 +71,16 @@ export default {
   data() {
     return {}
   },
-  created() {},
-  mounted() {},
-  methods: {},
+  
+  computed: {},
+
+  created() {
+    //   this.fetchBeers()
+  },
+
+  methods: {
+    //   ...mapActions(['fetchBeers'])
+  },
   watch: {}
 }
 </script>
