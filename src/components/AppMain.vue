@@ -1,6 +1,5 @@
 <template>
   <div class="app-main">
-    <router-view/>
     <div class="hero-section">
 
       <img class="hero-logo" src="/src/assets/img/fermented-logo.png" alt="mentally fermented logo">
@@ -17,12 +16,9 @@
 
         <div class="hero-image"></div>
       </div>
-
     </div>
 
-
     <div class="about-fermented">
-
       <div class="status-wrapper">
         <div class="blurb-wrapper">
           <p class="beer-blurb">It all began in 7000BCE, when 3 yeast spontaneously fermented the sugars of Redfern.
@@ -31,13 +27,9 @@
           </p>
         </div>
 
-        <!-- <on-tap :authed="authed"/>
-        <now-brewing :authed="authed" />
-        <past-beers :authed="authed"/>
-        <next-brew-date :authed="authed"/> -->
         <on-tap/>
-        <now-brewing/>
-        <past-beers/>
+        <now-brewing/>>
+        <past-beers/>>
         <next-brew-date/>
       </div>
     </div>
@@ -45,48 +37,25 @@
 </template>
 
 <script>
-import PictureInput from 'vue-picture-input'
 // TODO add max-width to sliders and map
 // TODO optimize image sizes
-// import AppService from '@/api/app.service.js'
 import NextBrewDate from '@/components/NextBrewDate.vue'
 import PastBeers from '@/components/Past.vue'
 import NowBrewing from '@/components/NowBrewing.vue'
 import OnTap from '@/components/OnTap.vue'
 import MfMap from '@/components/MfMap.vue'
-
-// import { mapActions } from 'vuex';
 export default {
-  props: [
-    // 'authed'
-  ],
   components: {
     OnTap,
     NowBrewing,
     PastBeers,
     NextBrewDate,
     MfMap,
-    PictureInput
   },
-  data() {
-    return {}
-  },
-  
-  computed: {},
-
-  created() {
-    //   this.fetchBeers()
-  },
-
-  methods: {
-    //   ...mapActions(['fetchBeers'])
-  },
-  watch: {}
 }
 </script>
 
 <style lang="scss">
-  // 991, 767, 570, 469
   .app-main {
     width: 100%;
     display: flex;

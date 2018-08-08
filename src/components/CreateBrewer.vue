@@ -6,6 +6,12 @@
           <v-card-text>
             <v-form v-model="valid" ref="createBrewerForm">
               <v-text-field
+                label="Username"
+                v-model="username"
+                :rules="usernameRules"
+                required
+              ></v-text-field>
+              <v-text-field
                 label="First Name"
                 v-model="firstname"
                 :rules="firstnameRules"
@@ -13,7 +19,7 @@
               ></v-text-field>
               <v-text-field
                 label="Last Name"
-                v-model="lastname"
+                v-model="nullFields.lastname"
               ></v-text-field>
               <v-checkbox label="Featured?" v-model="featured"></v-checkbox>
               <v-select
@@ -32,8 +38,8 @@
                 auto
                 hide-details
                 append-icon="arrow_drop_down"
-                :items="ranks"
-                v-model="selectedRank"
+                :items="allRanks"
+                v-model="nullFields.selectedRank"
               ></v-select>
 
               <v-btn :disabled="!valid" @click.prevent="handleSubmit" style="background-color: #F4812D; color: white;">Create</v-btn>
@@ -47,80 +53,83 @@
   </div>
 </template>
 <script>
-import AppService from '@/api/app.service.js'
+import { mapActions, mapGetters } from 'vuex';
 export default {
-  data() {
-    return {
-      beers: [],
-      selectedBeers: [],
-      firstname: null,
-      firstnameRules: [
-        (v) => !!v || 'First Name is required'
-      ],
-      lastname: null,
-      featured: false,
-      ranks: [],
-      selectedRank: null,
-      valid: false,
-    }
-  },
-  created() {
-    this.getBrewerRanks()
-    this.getAllBeers()
-  },
-  methods: {
-    // TODO check that first name AND last name brewer doesn't
-    // already exist and alert. Alert for confirm if does.
-    // Give additional option to edit.
-    handleSubmit() {
-      var createBrewerData = new FormData()
-      createBrewerData.append("first_name", this.firstname)
-      createBrewerData.append("last_name", this.lastname)
-      createBrewerData.append("featured", this.featured)
-      createBrewerData.append("rank", this.selectedRank)
-      createBrewerData.append("beer_ids", this.selectedBeers)
+    data() {
+        return {
+            nullFields: {
+                last_name: null,
+                selectedRank: null,
+            },    
+            username: null,
+            firstname: null,
+            featured: false,
+            selectedBeers: [],
 
-      AppService.createBrewer(createBrewerData)
+            firstnameRules: [
+            (v) => !!v || 'First Name is required'
+            ],
+            usernameRules: [
+            (v) => !!v || 'Username is required'
+            ],
+            valid: false,
+        }
+    },
+    computed: {
+        notNullFields() {
+            let dbObject = {}
+            Object.keys(this.nullFields).filter(key => {
+                if (this.nullFields[key] !== null && this.nullFields[key].length > 0) {
+                    dbObject[key] = this.nullFields[key]
+                }
+            })
+            return dbObject
+        },
+        allRanks() {
+            return this.$store.getters.brewerRanks.map(rank => {
+                return {
+                    value: rank.level,
+                    text: rank.name,
+                }
+            })
+        },
+        beers() {
+            return this.$store.getters.basicBeers.map(beer => {
+                return {
+                    value: beer.id,
+                    text: beer.name,
+                }
+            })
+        }
+    },
+    watch: {},
+    created() {},
+    methods: {
+    async handleSubmit() {
+        var data = new FormData()
+
+        for (var key in this.notNullFields) {
+            if (key.hasOwnProperty) {
+                data.append(key, this.notNullFields[key])          
+            }
+        }
+
+        data.append("username", this.username)
+        data.append("first_name", this.firstname)
+        data.append("featured", this.featured)
+        data.append("beer_ids", this.selectedBeers)
+
+        let result = await this.$store.dispatch('createBrewer', data)
+        if (result == "OK") {
+            this.$store.dispatch('createPopup', {text: "Successfully created brewer", state: true})
+            this.clear()
+        } else {
+            console.log("Something went wrong :(", result)
+        }
     },
     clear() {
-      this.$refs.createBrewerForm.reset()
+        this.$refs.createBrewerForm.reset()
     },
-    getBrewerRanks() {
-      AppService.getBrewerRanks()
-      .then(result => {
-        if (result.error) {
-          console.log("There was an error fetching ranks, ", err);
-        } else if (result.success) {
-          var ranks = result.success.data
-          var ranksNew = ranks.map(rank => {
-            return {
-              value: rank.id,
-              text: rank.name
-            }
-          })
-          this.ranks = ranksNew
-        } else {
-          console.log("Something went wrong :(");
-        }
-      })
-    },
-    getAllBeers() {
-      AppService.getBasicBeers()
-      .then(result => {
-        if (result.error) {
-          console.log("There was an error fetching beers");
-        } else if (result.success) {
-          var beers = result.success.data
-          var newBeers = beers.map(beer => {
-            return {
-              value: beer.id,
-              text: beer.name
-            }
-          })
-          this.beers = newBeers
-        }
-      })
-    }
   },
 }
 </script>

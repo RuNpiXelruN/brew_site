@@ -27,7 +27,10 @@
                   <span class="beer-card-title">Description</span>
                   <div class="desc-flex">
                     <p class="beer-card-description">{{beer.description}}</p>
-                    <div class="alc-percent">{{beer.alcohol_content}} ABV</div>
+                    <div class="edit-past-abv-wrapper">
+                        <div class="alc-percent">{{beer.alcohol_content}} ABV</div>
+                        <router-link tag="v-btn" class="info" :to="{name: 'editBeer', params: {id: `${beer.id}`}}">Edit</router-link>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -67,6 +70,11 @@ export default {
         ],
       }
     }
+  },
+  watch: {
+      '$route'() {
+          console.log("route", this.$refs)
+      }
   },
   created() {},
   methods: {
@@ -265,6 +273,14 @@ export default {
                       }
                       @media screen and (max-width: 570px) {
                         height: 100%;
+                      }
+
+                      .edit-past-abv-wrapper {
+                          display: flex;
+                          flex-flow: row wrap;
+                          align-items: center;
+                          justify-content: space-between;
+                          width: 100%;                          
                       }
 
                       .beer-card-description {

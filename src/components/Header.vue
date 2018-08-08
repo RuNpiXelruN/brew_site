@@ -2,66 +2,72 @@
   <div class="navWrapper">
     <div class="navContainer">
       <router-link to="/" >Home</router-link>
-      <!-- <router-link :to="{ name: 'beers', params: {}, query: {limit: 2, order: 'desc'} }">All Beers</router-link>
-      <router-link :to="{ name: 'beers', query: {status: 'active', order: 'desc'} }">On Tap</router-link>
-      <router-link :to="{ name: 'beers', query: {status: 'brewing', order: 'desc', limit: 1} }">Now Brewing</router-link>
-      <router-link :to="{ name: 'beers', query: {status: 'empty', order: 'desc'} }">Off Tap</router-link>
-      <router-link :to="{ name: 'createBeer', query: {} }" v-if="this.authed">Create Beer</router-link>
-      <router-link :to="{ name: 'createBrewer', query: {} }">Create Brewer</router-link>
-      <router-link :to="{ name: 'imageupload', query: {} }" v-if="this.authed">Upload Image</router-link>
-      <router-link :to="{ name: 'admin', query: {} }" v-if="!this.authed">Admin</router-link>
-      <a href="" @click.prevent="logout" v-if="this.authed">Logout</a> -->
-    </div>
+        <v-menu ofset-y>
+            <div
+                slot="activator"
+            >
+                Admin
+            </div>
+            <v-card>
+                <v-list>
+                    <v-list-tile-content>
+                        <v-list-tile-title>Create</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list>                
+            </v-card>
 
-    <!-- <div class="nav-mobile">
-      <div class="dropdown-bg" :class="{active: isActive}" @click="toggleNav"></div>
-      <span class="hamburger" @click="toggleNav" style="z-index: 999"><img src="/src/assets/img/nav-hamburger.png" alt="mobile hamburger navigation icon"/></span>
-      <div ref="navdropdown" class="mob-nav-items" :class="{active: isActive}">
-        <ul class="nav-ul">
-          <li class="nav-li" v-scroll-to="'#onTap, 50px'" @click.prevent="toggleNav"><a href="">On Tap</a></li>
-          <li class="nav-li" v-scroll-to="'#nowBrewing, 50px'" @click.prevent="toggleNav"><a href="#">Now Brewing</a></li>
-          <li class="nav-li" v-scroll-to="'#pastBeers, 50px'" @click.prevent="toggleNav"><a href="#">Past Beers</a></li>
-          <li class="nav-li" v-scroll-to="'#map, 50px'" @click.prevent="toggleNav"><a href="#">Get involved!</a></li>
-        </ul>
-      </div>
-    </div> -->
+            <v-divider></v-divider>
+
+            <v-list>
+                <router-link :to="{name: 'createBeer'}">
+                    <v-list-tile>
+                        <v-list-tile-title>Beer</v-list-tile-title>
+                    </v-list-tile>
+                </router-link>
+                <router-link :to="{name: 'createBrewer'}">
+                    <v-list-tile>                  
+                        <v-list-tile-title>Brewer</v-list-tile-title>
+                    </v-list-tile>
+                </router-link>
+            </v-list>
+
+            <v-card>
+                <v-list>
+                    <v-list-tile-content>
+                        <v-list-tile-title>Update</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list>                
+            </v-card>
+
+            <v-divider></v-divider>
+
+            <v-list>
+                <router-link :to="{name: 'editBeerAll'}">
+                    <v-list-tile>                  
+                        <v-list-tile-title>Beer</v-list-tile-title>
+                    </v-list-tile>
+                </router-link>
+                <router-link :to="{name: 'editBrewer'}">
+                    <v-list-tile>                  
+                        <v-list-tile-title>Brewer</v-list-tile-title>
+                    </v-list-tile>
+                </router-link>
+            </v-list>
+        </v-menu>
+    </div>
   </div>
 </template>
 
 <script>
-// import AppService from '@/api/app.service.js'
 import vueScrollTo from 'vue-scroll-to'
 export default {
-  props: [
-    // 'authed',
-  ],
+  props: [],
   components: {
   },
   data() {
-    return {
-    //   isActive: false
-    }
+    return {}
   },
-  methods: {
-    // logout() {
-    //   let token = window.localStorage.getItem("auth_token")
-    //   if (token) {
-    //     AppService.logout(token)
-    //     .then(result => {
-    //       if (result.error) {
-    //         console.log("Error trying to logout", result.error.status_text);
-    //       } else if (result.success) {
-    //         this.$router.push("/")
-    //         this.$emit("auth", false)
-    //         window.localStorage.removeItem("auth_token")
-    //       }
-    //     })
-    //   }
-    // },
-    // toggleNav() {
-    //   this.isActive = !this.isActive
-    // }
-  },
+  methods: {},
   created() {}
 }
 </script>

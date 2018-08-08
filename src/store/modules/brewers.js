@@ -2,32 +2,90 @@ import api from '../../api/app.service'
 
 const state = {
     brewers: [],
-    basicBrewers: []
+    basicBrewers: [],
+    brewerRanks: [],
 }
 
 const getters = {
     brewers: state => state.brewers,
-    basicBrewers: state => state.basicBrewers
+    basicBrewers: state => state.basicBrewers,
+    brewerRanks: state => state.brewerRanks
 }
 const actions = {
-    async fetchBrewers({ commit }, params) {
-        let limit, order, offset
-        if (params) {
-            limit = params.limit ? params.limit : ""
-            order = params.order ? params.order : ""
-            offset = params.offset ? params.offset : ""
-        }        
-        
+    async deleteBrewer({ dispatch }, params) {
         try {
-            let response = await api.getBrewers(limit, order, offset)
-                console.log('​response -> response', response);  
-                // commit('setBrewers', response.data)              
-        } catch (error) {
-            console.log('​}catch -> error', error);            
+            let response = await api.deleteBrewer(params.id)
+            if (response.status == 200) {
+                dispatch('initBrewers')
+                return response.statusText
+            } else {
+                return response.statusText
+            }
+        } catch (err) {
+            console.log('​}catch -> err', err);            
         }
-    }
+    },
+
+    async updateBrewer({ dispatch }, params) {
+        try {
+            let response = await api.updateBrewer(params.id, params.data)
+            if (response.status == 200) {
+                dispatch('initBrewers')
+                return response.statusText
+            } else {
+                return response.statusText
+            }
+        } catch (err) {
+            console.log('​}catch -> err', err);          
+        }
+    },
+
+    async createBrewer({ dispatch }, formData) {
+        try {
+            let response = await api.createBrewer(formData)
+            if (response.status == 200) {
+                dispatch('initBrewers')
+                return response.statusText
+            } else {
+                console.log("Error")
+            }
+        } catch (err) {
+            console.log('​}catch -> err', err);            
+        }
+    },
+
+    async initBrewerRanks({ commit }) {
+        try {
+            let response = await api.getBrewerRanks()
+            commit('setBrewerRanks', response)
+        } catch (err) {
+            console.log('​}catch -> err', err);            
+        }
+    },
+
+    async initBrewers({ commit }) {
+        try {
+            let brewers = await api.getBrewers()
+            commit('setBrewers', brewers)
+        } catch (err) {
+            console.log('​}catch -> err', err);            
+        }
+    },
+
+    async initBasicBrewers({ commit }) {
+        try {
+            let brewers = await api.getBasicBrewers()
+            commit('setBasicBrewers', brewers)
+        } catch (err) {
+            console.log('​}catch -> err', err);            
+        }
+
+    },
 }
 const mutations = {
+    setBrewerRanks(state, brewerRanks) {
+        state.brewerRanks = brewerRanks
+    },
     setBrewers(state, brewers) {
         state.brewers = brewers
     },

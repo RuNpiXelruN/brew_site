@@ -22,7 +22,10 @@
             <span class="beer-card-title">Description</span>
             <div class="desc-flex">
               <p class="beer-card-description">{{beer.description}}</p>
-              <span>{{beer.alcohol_content}} ABV</span>
+              <div class="edit-abv-wrapper">
+                <span>{{beer.alcohol_content}} ABV</span>
+                <router-link tag="v-btn" class="info" :to="{name: 'editBeer', params: {id: `${beer.id}`}}">Edit</router-link>
+              </div>
             </div>
             <!-- <button v-if="authed" v-on:click.prevent="btnClick(index)" type="button" name="button">Update</button>
 
@@ -229,6 +232,14 @@ export default {
           flex-flow: column nowrap;
           align-items: flex-start;
           justify-content: space-between;
+
+            .edit-abv-wrapper {
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+            }
         }
 
         .beer-title-wrapper, .beer-description-wrapper {
@@ -238,6 +249,12 @@ export default {
           @media screen and (max-width: 991px) {
             padding: 10px 12px;
           }
+        }
+
+        .beer-description-wrapper {
+            .desc-flex {
+                width: 100%;            
+            }
         }
       }
     }

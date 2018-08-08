@@ -1,17 +1,31 @@
 <template>
   <v-app class="bgMain">
-    <div id="app">
-      <!-- <Header :authed="authed" v-on:auth="setAuth" />
-      <router-view :authed="authed" v-on:auth="setAuth" /> -->
+    <div id="app">      
       <Header/>
       <router-view/>
-      <Footer />
+      <Footer/>
     </div>
+
+    <v-snackbar
+        v-model="popup.state"
+        :top="y === 'top'"
+        :right="x === 'right'"
+        :bottom="y === 'bottom'"
+        :left="x === 'left'"
+        :timeout="popup.timeout">
+        {{ popup.text  }}
+        
+        <v-btn
+            color="blue lighten-3"
+            flat
+            @click="popup.state = false">
+            Close
+      </v-btn>           
+    </v-snackbar>
   </v-app>
 </template>
 
 <script>
-// import AppService from './api/app.service.js'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 
@@ -23,12 +37,22 @@ export default {
   },
   data() {
     return {
-    //   authed: false
+        snackbar: false,
+        x: "right",
+        y: "top",
     }
   },
-  methods: {},
+  computed: {
+      popup() {
+          return this.$store.getters.popup
+      }
+  },
   created() {
       this.$store.dispatch('initBeers')
+      this.$store.dispatch('initBasicBeers')
+      this.$store.dispatch('initBrewers')
+      this.$store.dispatch('initBasicBrewers')
+      this.$store.dispatch('initBrewerRanks')
   },
   watch: {}
 }
@@ -41,7 +65,11 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  height: calc(100% - 74px);
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
 }
 
 body {

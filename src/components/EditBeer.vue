@@ -20,7 +20,7 @@
                 ref="alcohol_content"
                 label="Alcohol Content"
                 type="number"
-                v-model="alcContent"
+                v-model="alcoholContent"
               ></v-text-field>
               <v-select
                 :items="statuses"
@@ -46,20 +46,49 @@
 
               <v-checkbox class="featured-checkbox" label="Featured?" v-model="featured" light></v-checkbox>
 
-              <div class="picWrapper">
-                  <p>Update Image</p>
-                  <input type="file" @change="previewImage" accept="image/*">
-                  <div class="image-preview" v-if="!!imageData.length">
-                      <img class="preview" :src="imageData" alt="">
-                  </div>
-                  <div class="image-preview" v-else>
-                     <img class="preview" :src="selectedImageURL" alt="">
-                  </div>
-              </div>
+                <div class="picWrapper">
+                    <h3>Update Image</h3>
+                    <div class="image-flex-wrapper">
+                        <input type="file" @change="previewImage" accept="image/*">
+                        <div class="image-preview" v-if="!!imageData.length">
+                            <img class="preview" :src="imageData" alt="">
+                        </div>
+                        <div class="image-preview" v-else>
+                            <img class="preview" :src="selectedImageURL" alt="">
+                        </div>
+                    </div>
+                </div>
 
               <v-btn @click.prevent="handleSubmit" style="background-color: #F4812D; color: white;">Update</v-btn>
 
               <v-btn v-on:click="clear" style="color: #F4812D;">clear</v-btn>
+              
+              <v-btn color="primary" dark @click.stop="dialog = true">Delete</v-btn>
+            <v-dialog
+                v-model="dialog"
+                max-width="290"
+            >
+                <v-card>
+                    <v-card-title class="headline">Are you sure?</v-card-title>
+                    <v-spacer></v-spacer>
+                    <v-card-actions>
+                        <v-btn
+                            color="green darken-1"
+                            flat="flat"
+                            @click="dialog = false">
+                            Cancel
+                        </v-btn>
+                        
+                        <v-btn
+                            color="green darken-1"
+                            flat="flat"
+                            @click="deleteBeer">
+                            Confirm
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+
             </v-form>
           </v-card-text>
         </v-card>
@@ -74,18 +103,18 @@ export default {
     data() {
         return {
             beer: {},
-            brewers: [],
             statuses: ["upcoming", "brewing", "active-full", "active-empty", "past"],
             selectedStatus: null,
             selectedBrewers: [],
-            name: null,
-            alcContent: null,      
+            name: "",
+            alcoholContent: null,      
             description: null,
             startingBrewers: {},
             file: null,
             imageData: "",
             selectedImageURL: null,
             featured: null,
+            dialog: false,
         }
     },
   
@@ -100,22 +129,27 @@ export default {
                     text: `${brewer.first_name} ${brewer.last_name}`
                 }                        
             })
-        },    
+        },                
     },
 
     watch: {
-        selectedBrewers() {
-            // console.log('​selectedBrewers -> selectedBrewers', this.selectedBrewers);
+        '$route'(to, from) {
+            if (from.params.id !== to.params.id) {
+                this.fetchCurrentBeer({id: to.params.id})
+                this.selectedBrewers = []
+            }
         },
 
-        currentBeer(newVal, oldVal) {          
+        currentBeer(newVal, oldVal) {        
             this.name = newVal.name
             this.description = newVal.description
-            this.alcContent = newVal.alcohol_content
+            this.alcoholContent = newVal.alcohol_content
             this.featured = newVal.featured
-            newVal.brewers.map(brewer => {
-                this.selectedBrewers.push(brewer.id)
-            })
+            if (newVal.brewers) {
+                newVal.brewers.map(brewer => {
+                    this.selectedBrewers.push(brewer.id)
+                })
+            }            
             this.startingBrewers = this.selectedBrewers
             this.selectedStatus = newVal.status
             this.selectedImageURL = newVal.image_url
@@ -123,14 +157,25 @@ export default {
     },
 
     created() {
-        this.fetchCurrentBeer({id: this.$route.params.id, includeBrewers: true})
+        this.fetchCurrentBeer({id: this.$route.params.id})        
     },
 
     methods: {
-        ...mapActions([
-            'fetchCurrentBeer',
-            'updateBeer',
-        ]),
+        ...mapActions({
+            fetchCurrentBeer: 'fetchCurrentBeer',
+            updateBeer: 'updateBeer',
+            deleteBeerFromDB: 'deleteBeer'
+        }),
+
+        async deleteBeer() {
+            this.dialog = false
+            let result = await this.deleteBeerFromDB({id: this.$route.params.id})
+            if (result == "OK") {
+                this.$router.push("/")
+            } else {
+                console.log("Error occurred")
+            }
+        },
 
         previewImage(event) {
             let input = event.target
@@ -140,26 +185,26 @@ export default {
                     this.imageData = e.target.result
                 }
                 reader.readAsDataURL(input.files[0])
+                this.file = input.files[0]
             }
         },
 
         handleSubmit() {
-            let data = new FormData()
+            let data = new FormData()            
             if (this.file) {
                 data.append("image", this.file, this.file.name)
             }
     
-            data.append("id", this.currentBeer.id)
             data.append("name", this.name)
             data.append("description", this.description)
-            data.append('alcohol_content', this.alcContent)
+            data.append('alcohol_content', this.alcoholContent)
             data.append('featured', this.featured)
             data.append('brewer_ids', this.selectedBrewers)
             data.append('status', this.selectedStatus)
             
             let statusText = this.updateBeer({id: this.currentBeer.id, data: data})
             if (statusText = "OK") {
-                this.$router.push("/")
+                this.$router.push('/')
             } else {
                 console.log("Error occurred: ", statusText)
             }
@@ -173,9 +218,8 @@ export default {
         showStartingData() {
             this.name = this.currentBeer.name
             this.description = this.currentBeer.description
-            this.alcContent = this.currentBeer.alcohol_content
+            this.alcoholContent = this.currentBeer.alcohol_content
             this.featured = this.currentBeer.featured
-            this.alcohol_content = this.currentBeer.alcohol_content
             this.selectedStatus = this.currentBeer.status
         },
     },
@@ -188,43 +232,34 @@ export default {
     min-height: calc(100% - 74px);
 
     .picWrapper {
-       .file-upload-form, .image-preview {
+        border-top: 1px solid rgba(0,0,0,0.3);
+
+        h3 {
+            text-align: left;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .image-flex-wrapper {
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: flex-start;
+
+            input {
+                margin-bottom: 20px;
+            }
+        }
+
+       .image-preview {
             font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-            padding: 20px;
+            height: 200px;
         }
         img.preview {
-            max-height: 200px;
-            height: auto;
+            max-height: 200px;            
+            height: inherit;
             background-color: white;
             border: 1px solid #DDD;
             padding: 5px;
         }
-
-      .picUploader {
-        height: 200px !important;
-        margin-top: 20px;
-        margin-bottom: 50px;
-        padding-bottom: 20px;
-        width: 50% !important;
-
-        .preview-container {
-          padding-bottom: 3px;
-        }
-
-        .picture-preview, .picture-inner {
-          z-index: 1 !important;
-        }
-      }
-
-      .picPreviewDiv {
-        height: 200px !important;
-        width: 40% !important;
-        text-align: left;
-        margin-top: 30px;
-        background-position: center !important;
-        background-size: contain !important;
-        background-repeat: no-repeat !important;
-      }
     }
   }
 </style>

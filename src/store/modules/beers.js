@@ -3,18 +3,62 @@ import api from '../../api/app.service'
 const state = {
     beers: [],
     currentBeer: null,
+    basicBeers: [],
 }
 
 const mutations = {
+    setBasicBeers: (state, beers) => {
+        state.basicBeers = beers
+    },
     setBeers: (state, beers) => {
         state.beers = beers
     },
     setCurrentBeer: (state, beer) => {
         state.currentBeer = beer
+    },
+
+    addBeer: (state, beer) => {
+        state.beers = state.beers.push(beer)   
     }
 }
 
 const actions = {
+    async initBasicBeers({ commit }) {
+        try {
+            let response = await api.getBasicBeers()
+                commit('setBasicBeers', response)
+        } catch (err) {
+            console.log('​}catch -> err', err);            
+        }
+    },
+
+    async deleteBeer({ dispatch }, params) {
+        try {
+            let response = await api.deleteBeer(params.id)
+                if (response.status == 200) {
+                    dispatch('initBeers')
+                    return response.statusText
+                } else {
+                    console.log("Error", response.status)
+                }
+        } catch (err) {
+            console.log('​}catch -> err', err);            
+        }
+    },
+
+    async createBeer({ dispatch }, formData) {
+        try {                        
+            let response = await api.createBeer(formData.params)
+            if (response.status == 200) {
+                dispatch('initBeers')
+            } else {
+                console.log("Errrrr")
+            }                
+        } catch (err) {
+            console.log('​}catch -> err', err);            
+        }
+    },
+
     async initBeers({commit}) {
         try {
             let beers = await api.getAllBeers()
@@ -24,28 +68,21 @@ const actions = {
         }        
     },
 
-    async updateBeer(_, params) {
+    async updateBeer({ dispatch }, params) {
         try {
-            let response = await api.updateBeer(params.id, params.data)            
+            let response = await api.updateBeer(params.id, params.data)        
                 if (response.status == 200) {
-                    this.dispatch('initBeers')
+                    dispatch('initBeers')
+                    return response.statusText
                 }
         } catch(err) {
             console.log('​asyncupdateBeers -> err', err);
         }
     },
 
-    async fetchCurrentBeer({ commit, rootState }, params) {
-        let includeBrewers = params.includeBrewers ? params.includeBrewers : null;
-
+    async fetchCurrentBeer({ commit }, params) {
         try {
-            let response = await api.getBeer(params.id, includeBrewers)
-            
-            if (response.brewers) {
-                rootState.brewers.basicBrewers = response.brewers
-                commit('setCurrentBeer', response.beer)
-                return
-            }
+            let response = await api.getBeer(params.id)     
             commit('setCurrentBeer', response)
 
         } catch(err) {
@@ -55,8 +92,9 @@ const actions = {
 }
 
 const getters = {
+    basicBeers: (state) => state.basicBeers,
     beers: (state) => state.beers,
-    currentBeer: (state) => state.currentBeer
+    currentBeer: (state) => state.currentBeer    
 }
 
 export default{
@@ -65,80 +103,3 @@ export default{
     actions,
     mutations
 }
-
-// import api from "../../api/app.service"
-
-// const state = {
-//     allBeers: [],
-//     brewingBeers: [],
-//     activeBeers: [],
-//     pastBeers: [],
-//     currentBeer: null,
-// }
-
-// const getters = {
-//     allBeers: state => state.allBeers,
-//     activeBeers: state => {
-//         return state.allBeers.filter(beer => beer.status == "active")
-//     },
-
-//     pastBeers: state => state.pastBeers,
-//     brewingBeers: (state) => {        
-//         return state.allBeers.filter(beer => beer.status == "brewing")
-//     },
-
-//     currentBeer: state => state.currentBeer,
-// }
-
-// const actions = {
-//     async fetchBeers({commit}) {        
-//         try {
-//             let beers = await api.getAllBeers()
-//             commit('setBeers', beers)
-
-//         } catch (err) {
-//         }
-//     },
-
-//     async updateBeer({ commit }, params) {
-//         try {
-//             let response = await api.updateBeer(params.id, params.data)
-//             if (response.statusText == "OK") {
-//                 this.dispatch('fetchBeers')
-//             }
-//             return response.statusText            
-//         } catch (err) {
-//         }
-//     },
-
-//     async fetchCurrentBeer({ commit, rootState }, params) {
-//         let includeBrewers = params.includeBrewers ? params.includeBrewers : null;
-
-//         try {
-//             let response = await api.getBeer(params.id, includeBrewers)
-//             if (response.brewers) {
-//                 rootState.brewers.basicBrewers = response.brewers
-//                 commit('setCurrentBeer', response.beer)
-//                 return
-//             }
-//             commit('setCurrentBeer', response)
-//         } catch (err) {
-//         }
-//     },
-// }
-
-// const mutations = {
-//     setBeers: (state, beers) => {
-//         state.allBeers = beers
-//     },
-//     setCurrentBeer: (state, beer) => {
-//         state.currentBeer = beer
-//     }    
-// }
-
-// export default {
-//     state,
-//     getters,
-//     actions,
-//     mutations
-// }

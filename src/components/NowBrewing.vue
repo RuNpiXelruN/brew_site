@@ -11,6 +11,9 @@
             <h3 class="beer-card-heading">{{beer.name}}</h3>
           </div>
         </div>
+        <div class="edit-brewing-wrapper">
+            <router-link tag="v-btn" class="info" :to="{name: 'editBeer', params: {id: `${beer.id}`}}">Edit</router-link>
+        </div>
       </div>
     </div>
 
@@ -21,6 +24,7 @@
 import { statusBeersMixin } from '../mixins/statusBeersMixin'
 export default {
     mixins: [statusBeersMixin("brewing", 2)],
+    methods: {}
 }
 </script>
 
