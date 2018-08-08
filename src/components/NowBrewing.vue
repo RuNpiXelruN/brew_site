@@ -1,15 +1,18 @@
 <template>
   <div id="nowBrewing" class="now-brewing-wrapper">
+  <!-- <div id="nowBrewing" class="now-brewing-wrapper" v-if="beers.length > 0"> -->
     <h2 class="status-heading">Now Brewing</h2>
     <p class="status-p">Mentally Fermented’s dedicated team of bootleggers are well known for pushing the boundaries of their craft, experimenting with all types of store bought hops, spices and woods to create unique, full flavoured beers.</p>
 
     <div class="brewing-image-section">
-
-      <div class="brewing-beer" v-for="beer in brewingBeers" v-bind:key="beer.id">
+      <div class="brewing-beer" v-for="beer in beers" v-bind:key="beer.id">
         <div class="beer-keg">
           <div class="inner-card-wrapper">
             <h3 class="beer-card-heading">{{beer.name}}</h3>
           </div>
+        </div>
+        <div class="edit-brewing-wrapper">
+            <router-link tag="v-btn" class="info" :to="{name: 'editBeer', params: {id: `${beer.id}`}}">Edit</router-link>
         </div>
       </div>
     </div>
@@ -18,28 +21,13 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { statusBeersMixin } from '../mixins/statusBeersMixin'
 export default {
-  components: {},
-  props: [
-    'authed'
-  ],
-  data() {
-    return {        
-    }
-  },
-  computed: {
-      ...mapGetters(['brewingBeers'])
-  },
-  methods: {
-    ...mapActions(['fetchBrewingBeers'])
-  },
-  created() {
-      this.fetchBrewingBeers({status: "brewing", limit: "2", order: "desc"})
-  },
-  watch: {}
+    mixins: [statusBeersMixin("brewing", 2)],
+    methods: {}
 }
 </script>
+
 <style lang="scss">
   .now-brewing-wrapper {
     @include flexCol;

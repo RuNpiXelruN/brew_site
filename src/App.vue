@@ -1,15 +1,31 @@
 <template>
   <v-app class="bgMain">
-    <div id="app">
-      <Header :authed="authed" v-on:auth="setAuth" />
-      <router-view :authed="authed" v-on:auth="setAuth" />
-      <Footer />
+    <div id="app">      
+      <Header/>
+      <router-view/>
+      <Footer/>
     </div>
+
+    <v-snackbar
+        v-model="popup.state"
+        :top="y === 'top'"
+        :right="x === 'right'"
+        :bottom="y === 'bottom'"
+        :left="x === 'left'"
+        :timeout="popup.timeout">
+        {{ popup.text  }}
+        
+        <v-btn
+            color="blue lighten-3"
+            flat
+            @click="popup.state = false">
+            Close
+      </v-btn>           
+    </v-snackbar>
   </v-app>
 </template>
 
 <script>
-import AppService from './api/app.service.js'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 
@@ -21,34 +37,22 @@ export default {
   },
   data() {
     return {
-      authed: false
+        snackbar: false,
+        x: "right",
+        y: "top",
     }
   },
-  methods: {
-    checkSession() {
-      let token = window.localStorage.getItem("auth_token")
-      if (token) {
-        AppService.checkSession(token)
-        .then(result => {
-          if (result.error) {
-            this.authed = false
-            window.localStorage.removeItem("auth_token")
-            return
-          }
-          if (result.success) {
-            window.localStorage.setItem("auth_token", result.success.auth_token)
-            this.authed = true
-            return
-          }
-        })
+  computed: {
+      popup() {
+          return this.$store.getters.popup
       }
-    },
-    setAuth(authStatus) {
-      this.authed = authStatus
-    }
   },
   created() {
-    this.checkSession()
+      this.$store.dispatch('initBeers')
+      this.$store.dispatch('initBasicBeers')
+      this.$store.dispatch('initBrewers')
+      this.$store.dispatch('initBasicBrewers')
+      this.$store.dispatch('initBrewerRanks')
   },
   watch: {}
 }
@@ -61,7 +65,11 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  height: calc(100% - 74px);
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
 }
 
 body {

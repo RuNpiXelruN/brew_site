@@ -7,19 +7,19 @@
             <v-form v-model="valid" ref="form" lazy-validation v-on:submit.prevent="handleSubmit">
               <v-text-field
                 label="Name"
-                v-model="name"
+                v-model="fields.name"
                 :rules="nameRules"
                 :counter="10"
                 required
               ></v-text-field>
               <v-text-field
-                v-model="description"
+                v-model="fields.description"
                 name="input-7-1"
                 label="Description"
                 multi-line
               ></v-text-field>
               <v-text-field
-                v-model="alcohol_content"
+                v-model="fields.alcohol_content"
                 label="Alcohol Content"
                 type="number"
               ></v-text-field>
@@ -29,42 +29,31 @@
                 single-line
                 auto
                 label="Choose beer status"
-                v-model="selectedStatus"
+                v-model="fields.selectedStatus"
                 append-icon="arrow_drop_down"
               ></v-select>
 
-              <h3>{{selectedStatus}}</h3>
-
               <v-select
-                class="testtttt"
-                style="background: white;"
-                v-bind:items="brewers"
+                :items="allBrewers"
                 label="Select brewers"
+                v-model="selectedBrewers"
                 multiple
-                single-line
-                auto
                 hide-details
-                append-icon="arrow_drop_down"
-                v-model="selectedBrewers">
+                max-height="400"
+                append-icon="arrow_drop_down">
               </v-select>
 
               <v-checkbox class="featured-checkbox" v-bind:label="`Featured?`" v-model="featured" light></v-checkbox>
 
-              <picture-input
-                ref="pictureInput"
-                class="picUploader"
-                @change="showPicChange"
-                margin="16"
-                height="400"
-                width="800"
-                accept="image/*"
-                size="10"
-                buttonClass="btn"
-                :customStrings="{
-                  upload: '<h1>Bummer!</h1>',
-                  drag: `<p>Drag an image or<br>click to select a file</p>`
-                }">
-              </picture-input>
+              <div class="picWrapper">
+                  <h3>Upload Image</h3>
+                  <div class="image-flex-wrapper">
+                    <input ref="imageInput" type="file" @change="previewImage" accept="image/*">
+                    <div class="image-preview" v-if="!!imageData.length">
+                        <img class="preview" :src="imageData" alt="new beer image">
+                    </div>
+                  </div>
+              </div>
 
               <v-btn :disabled="!valid" @click.prevent="handleSubmit" style="background-color: #F4812D; color: white;">Create</v-btn>
 
@@ -78,92 +67,95 @@
 </template>
 
 <script>
-  import AppService from '@/api/app.service.js'
-  import PictureInput from 'vue-picture-input'
+  import { mapGetters, mapActions } from 'vuex'
   export default {
-    components: {
-      PictureInput
-    },
     data() {
       return {
+        fields: {
+            name: null,
+            description: null,
+            alcohol_content: null,
+            selectedStatus: null,            
+        },
         file: null,
         featured: false,
-        alcohol_content: null,
-        description: null,
         brewers: [],
         selectedBrewers: [],
         statuses: ["upcoming", "brewing", "active-full", "active-empty", "past"],
-        selectedStatus: null,
         valid: true,
-        name: null,
         nameRules: [
           (v) => !!v || 'Name is required',
           // (v) => v && v.length <= 10 || 'Name must be less than 10 characters'
         ],
+        imageData: "",
       }
     },
-    created() {
-      this.getBrewerNames()
+    computed: {
+        notNullFields() {
+            let dbObject = {}
+            Object.keys(this.fields).filter(key => {
+                if (this.fields[key] !== null && this.fields[key].length > 0) {
+                    dbObject[key] = this.fields[key]
+                }
+            })
+            return dbObject
+        },
+
+        allBrewers() {
+            return this.$store.getters.basicBrewers.map(brewer => {
+                return {
+                    value: brewer.id,
+                    text: `${brewer.first_name} ${brewer.last_name}`,
+                }
+            })
+        }
     },
     watch: {},
     methods: {
-      showPicChange(image) {
-        if (image) {
-          this.file = this.$refs.pictureInput.file
-        }
-      },
-      getBrewerNames() {
-        AppService.getBrewerNames()
-        .then(result => {
-          if (result.error) {
-            console.log("Error fetching brewer names: ", result.error.status_text);
-          } else if (result.success) {
-            var brews = result.success.data
-            var brewsNew = brews.map((brewer) => {
-              return {
-                value: brewer.id,
-                text: `${brewer.first_name} ${brewer.last_name}`
-              }
-            })
-            this.brewers = brewsNew
-          } else {
-            console.log("Something went wrong setting brewer names :(");
-          }
-        })
-      },
-      handleSubmit() {
-        if (this.$refs.form.validate()) {
-          var createBeerData = new FormData()
-          if (this.file) {
-            createBeerData.append('image', this.file, this.file.name)
-          }
-          createBeerData.append('name', this.name)
-          createBeerData.append('description', this.description)
-          createBeerData.append('alcohol_content', this.alcohol_content)
-          createBeerData.append('featured', this.featured)
-          createBeerData.append('brewer_ids', this.selectedBrewers)
-          createBeerData.append('status', this.selectedStatus)
-
-          AppService.createBeer(createBeerData)
-          .then(result => {
-            if (result.error) {
-              console.log("Error -> ", result.error)
-            } else if (result.success){
-              this.$refs.form.reset()
-              this.file = null
-              this.$refs.pictureInput.removeImage()
-              this.$router.push("/")
-              console.log("Create Success!", result.success.data)
-            } else {
-              console.log("Something went wrong :(");
+        previewImage(event) {
+            let input = event.target
+            if (input.files && input.files[0]) {
+                let reader = new FileReader()
+                reader.onload = (e) => {
+                    this.imageData = e.target.result
+                    this.file = input.files[0]
+                }
+                reader.readAsDataURL(input.files[0])
             }
-          })
-        }
-      },
+        },
+
+        async handleSubmit() {
+            if (this.$refs.form.validate()) {
+                var createBeerData = new FormData()
+                
+                if (this.file) {
+                    createBeerData.append('image', this.file, this.file.name)
+                }
+                
+                for (var key in this.notNullFields) {
+                    if (key.hasOwnProperty) {
+                        createBeerData.append(key, this.notNullFields[key])
+                    }
+                }                
+                
+                createBeerData.append('featured', this.featured)
+                createBeerData.append('brewer_ids', this.selectedBrewers)
+
+                let result = await this.$store.dispatch('createBeer', {params: createBeerData})                
+                if (result = "OK") {
+                    this.$store.dispatch('createPopup', {text: "Beer successfully created", state: true})
+                    this.clear()
+                } else {
+                    console.log("Error occurred: ", result)
+                }
+            }
+        },
+
       clear () {
         this.$refs.form.reset()
         this.file = null
-        this.$refs.pictureInput.removeImage()
+        this.imageData = ""
+        this.$refs.imageInput.value = ""
       }
     },
   }
@@ -177,13 +169,30 @@
       margin-top: 20px;
     }
 
-    #picture-input {
-      margin-top: 50px;
-      margin-bottom: 30px;
+    .picWrapper {
+        border-top: 1px solid rgba(0,0,0,0.3);
 
-      .picture-preview, .picture-inner {
-        z-index: 1 !important;
-      }
+        h3 {
+            text-align: left;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        .image-flex-wrapper {
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: flex-start;
+        }
+
+        .image-preview {
+            height: 200px;
+            margin: 20px 0;
+            
+            img {
+                height: inherit;
+            }
+
+        }
     }
   }
 </style>

@@ -7,7 +7,8 @@
       <div class="arrow-right"></div>
     </div>
 
-    <slick ref="slick" class="mob-slick-wrapper" v-if="beers.length > 0" :options="slickOptions">
+    <!-- <slick ref="slick" class="mob-slick-wrapper" v-if="beers.length > 0" :options="slickOptions"> -->
+    <slick ref="slick" class="mob-slick-wrapper" v-if="!!beers.length" :options="slickOptions">
       <div class="mob-active-beer" v-for="(beer, index) in beers" :key="index">
         <div class="image-wrapper">
           <div v-if="beer.status.name === 'active-empty'" class="runout runout-img"></div>
@@ -357,7 +358,8 @@ export default {
             padding: 7% 5%;
 
             .beer-card-heading {
-              @include h3Style;
+              @include h3Style;              
+
               @media screen and (max-width: 991px) {
                 font-size: 16px;
               }

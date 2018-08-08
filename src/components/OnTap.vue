@@ -5,7 +5,7 @@
       <p class="status-p">We maintain 1-3 beers on tap, which are constantly changing to satisfy the never-ending thirst of our cicerones.</p>
 
       <div class="active-beers-section">
-        <div class="active-beer" v-for="(beer, index) in activeBeers" v-bind:key="beer.id">
+        <div class="active-beer" v-for="beer in beers" v-bind:key="beer.id">
           <div class="image-container">
             <div v-if="beer.status === 'active-empty'" class="runout runout-img"></div>
             <img v-bind:src="beer.image_url" alt="image of currently active beer" class="beer-card-image">
@@ -22,16 +22,19 @@
             <span class="beer-card-title">Description</span>
             <div class="desc-flex">
               <p class="beer-card-description">{{beer.description}}</p>
-              <span>{{beer.alcohol_content}} ABV</span>
+              <div class="edit-abv-wrapper">
+                <span>{{beer.alcohol_content}} ABV</span>
+                <router-link tag="v-btn" class="info" :to="{name: 'editBeer', params: {id: `${beer.id}`}}">Edit</router-link>
+              </div>
             </div>
-            <button v-if="authed" v-on:click.prevent="btnClick(index)" type="button" name="button">Update</button>
+            <!-- <button v-if="authed" v-on:click.prevent="btnClick(index)" type="button" name="button">Update</button>
 
-            <router-link v-if="authed" :to="{name: 'editBeer', params: {id: `${beer.id}`}}">Edit</router-link>
+            <router-link v-if="authed" :to="{name: 'editBeer', params: {id: `${beer.id}`}}">Edit</router-link> -->
           </div>
         </div>
       </div>
 
-      <edit-beer-component :beer="beerToEdit" v-on:clearupdate="clearUpdate"/>
+      <!-- <edit-beer-component :beer="beerToEdit" v-on:clearupdate="clearUpdate"/> -->
 
       <!-- TODO add alt tags to images -->
       <!-- TODO add empty class to mob slider beers on tap -->
@@ -45,41 +48,32 @@
 <script>
 // TODO add 'runout' class to mob slider
 import MobSlider from '@/components/MobSlider.vue'
-import EditBeerComponent from '@/components/EditBeerComponent'
-import { mapActions, mapGetters } from 'vuex'
+// import EditBeerComponent from '@/components/EditBeerComponent'
+import { statusBeersMixin } from '../mixins/statusBeersMixin'
 export default {
+    mixins: [statusBeersMixin("active", 3)],
   components: {
     MobSlider,
-    EditBeerComponent
+    // EditBeerComponent
   },
-  props: [
-    'authed'
-  ],
+  props: [],
   data() {
     return {
-      beers: [],
-      beerToEdit: {}
+    //   beers: [],
+    //   beerToEdit: {}
     }
   },
-  computed: {
-      ...mapGetters(['activeBeers'])
-  },
   methods: {
-    ...mapActions(['fetchActiveBeers']),
-    btnClick(index) {
-      if (index) {
-        this.beerToEdit = this.beers[index]
-      }
-    },
-    clearUpdate(value) {
-      this.beerToEdit = value
-    },
-  },
-  created() {
-      this.fetchActiveBeers({status: "active", limit: "3", order: "desc"})
-  },
-  mounted() {},
-  watch: {}
+    //   ...mapActions['fetchBeers'],
+    // btnClick(index) {
+    //   if (index) {
+    //     this.beerToEdit = this.beers[index]
+    //   }
+    // },
+    // clearUpdate(value) {
+    //   this.beerToEdit = value
+    // },
+  }
 }
 </script>
 <style lang="scss">
@@ -238,6 +232,14 @@ export default {
           flex-flow: column nowrap;
           align-items: flex-start;
           justify-content: space-between;
+
+            .edit-abv-wrapper {
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+            }
         }
 
         .beer-title-wrapper, .beer-description-wrapper {
@@ -247,6 +249,12 @@ export default {
           @media screen and (max-width: 991px) {
             padding: 10px 12px;
           }
+        }
+
+        .beer-description-wrapper {
+            .desc-flex {
+                width: 100%;            
+            }
         }
       }
     }
