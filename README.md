@@ -1,6 +1,6 @@
 # brew_site
 
-> A Vue.js project
+> Vue frontend for the MF Brewsite
 
 ## Build Setup
 
