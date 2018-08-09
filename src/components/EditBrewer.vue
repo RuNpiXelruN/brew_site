@@ -1,4 +1,5 @@
 <template>
+    <transition name="fade" appear>
     <div class="edit-brewer-wrapper">
         <v-layout justify-center>
             <v-flex xs12 sm6 class="edit-brewer-flex">
@@ -81,8 +82,9 @@
                     </v-container>
                 </v-form>
             </v-flex>            
-        </v-layout>        
+        </v-layout>       
     </div>
+    </transition> 
 </template>
 <script>
 export default {
@@ -204,4 +206,19 @@ export default {
             margin-top: 30px;
         }
     }
+    // animation / transition
+    .fade-enter {
+        opacity: 0
+    }
+
+    .fade-enter-active {
+        transition: opacity 1s ease;
+    }
+    
+    // .fade-leave {}
+
+    .fade-leave-active {
+        opacity: 0;
+    }
+
 </style>

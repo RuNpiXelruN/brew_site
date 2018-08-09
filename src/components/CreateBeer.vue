@@ -1,69 +1,73 @@
 <template>
-  <div class="create-beer-wrapper">
-    <v-layout justify-center>
-      <v-flex xs12 sm10 md6 lg4 elevation-7>
-        <v-card>
-          <v-card-text>
-            <v-form v-model="valid" ref="form" lazy-validation v-on:submit.prevent="handleSubmit">
-              <v-text-field
-                label="Name"
-                v-model="fields.name"
-                :rules="nameRules"
-                :counter="10"
-                required
-              ></v-text-field>
-              <v-text-field
-                v-model="fields.description"
-                name="input-7-1"
-                label="Description"
-                multi-line
-              ></v-text-field>
-              <v-text-field
-                v-model="fields.alcohol_content"
-                label="Alcohol Content"
-                type="number"
-              ></v-text-field>
+    <transition name="fade" appear>
+    <div class="create-beer-wrapper">
+        <v-layout justify-center>
+            <v-flex xs12 sm10 md6 lg4 elevation-7>
+            <v-card>
+                <v-card-text>
+                <v-form v-model="valid" ref="form" lazy-validation v-on:submit.prevent="handleSubmit">
+                    <v-text-field
+                    label="Name"
+                    v-model="fields.name"
+                    :rules="nameRules"
+                    :counter="10"
+                    required
+                    ></v-text-field>
+                    <v-text-field
+                    v-model="fields.description"
+                    name="input-7-1"
+                    label="Description"
+                    multi-line
+                    ></v-text-field>
+                    <v-text-field
+                    v-model="fields.alcohol_content"
+                    label="Alcohol Content"
+                    type="number"
+                    ></v-text-field>
 
-              <v-select
-                v-bind:items="statuses"
-                single-line
-                auto
-                label="Choose beer status"
-                v-model="fields.selectedStatus"
-                append-icon="arrow_drop_down"
-              ></v-select>
+                    <v-select
+                    v-bind:items="statuses"
+                    single-line
+                    auto
+                    label="Choose beer status"
+                    v-model="fields.selectedStatus"
+                    append-icon="arrow_drop_down"
+                    ></v-select>
 
-              <v-select
-                :items="allBrewers"
-                label="Select brewers"
-                v-model="selectedBrewers"
-                multiple
-                hide-details
-                max-height="400"
-                append-icon="arrow_drop_down">
-              </v-select>
+                    <v-select
+                    :items="allBrewers"
+                    label="Select brewers"
+                    v-model="selectedBrewers"
+                    multiple
+                    hide-details
+                    max-height="400"
+                    append-icon="arrow_drop_down">
+                    </v-select>
 
-              <v-checkbox class="featured-checkbox" v-bind:label="`Featured?`" v-model="featured" light></v-checkbox>
+                    <v-checkbox class="featured-checkbox" v-bind:label="`Featured?`" v-model="featured" light></v-checkbox>
 
-              <div class="picWrapper">
-                  <h3>Upload Image</h3>
-                  <div class="image-flex-wrapper">
-                    <input ref="imageInput" type="file" @change="previewImage" accept="image/*">
-                    <div class="image-preview" v-if="!!imageData.length">
-                        <img class="preview" :src="imageData" alt="new beer image">
+                    <div class="picWrapper">
+                        <h3>Upload Image</h3>
+                        <div class="image-flex-wrapper">
+                        <input ref="imageInput" type="file" @change="previewImage" accept="image/*">
+                        <div class="image-preview" v-if="!!imageData.length">
+                            <img class="preview" :src="imageData" alt="new beer image">
+                        </div>
+                        </div>
                     </div>
-                  </div>
-              </div>
 
-              <v-btn :disabled="!valid" @click.prevent="handleSubmit" style="background-color: #F4812D; color: white;">Create</v-btn>
+                    <div class="button-wrapper">
+                        <v-btn :disabled="!valid" @click.prevent="handleSubmit" style="background-color: #F4812D; color: white;">Create</v-btn>
+                        <v-btn v-on:click="clear" style="color: #F4812D;">clear</v-btn>
+                    </div>
 
-              <v-btn v-on:click="clear" style="color: #F4812D;">clear</v-btn>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </div>
+                </v-form>
+                </v-card-text>
+            </v-card>
+            </v-flex>
+        </v-layout>
+    </div>
+    </transition>
 </template>
 
 <script>
@@ -194,5 +198,23 @@
 
         }
     }
+    .button-wrapper {
+        margin-top: 50px;
+    }
   }
+
+    // animation / transition
+    .fade-enter {
+        opacity: 0
+    }
+
+    .fade-enter-active {
+        transition: opacity 1s ease;
+    }
+    
+    // .fade-leave {}
+
+    .fade-leave-active {
+        opacity: 0;
+    }
 </style>
