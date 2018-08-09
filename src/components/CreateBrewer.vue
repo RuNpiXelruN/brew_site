@@ -1,56 +1,60 @@
 <template>
-  <div class="create-brewer-wrapper">
-    <v-layout justify-center>
-      <v-flex xs12 sm10 md6 lg4 elevation-7>
-        <v-card>
-          <v-card-text>
-            <v-form v-model="valid" ref="createBrewerForm">
-              <v-text-field
-                label="Username"
-                v-model="username"
-                :rules="usernameRules"
-                required
-              ></v-text-field>
-              <v-text-field
-                label="First Name"
-                v-model="firstname"
-                :rules="firstnameRules"
-                required
-              ></v-text-field>
-              <v-text-field
-                label="Last Name"
-                v-model="nullFields.lastname"
-              ></v-text-field>
-              <v-checkbox label="Featured?" v-model="featured"></v-checkbox>
-              <v-select
-                class=""
-                :items="beers"
-                v-model="selectedBeers"
-                multiple
-                auto
-                append-icon="arrow_drop_down"
-                hide-details
-                label="Any brews he/she was a part of?">
-              </v-select>
-              <v-select
-                class="someclass"
-                label="Brewer Rank"
-                auto
-                hide-details
-                append-icon="arrow_drop_down"
-                :items="allRanks"
-                v-model="nullFields.selectedRank"
-              ></v-select>
+    <transition name="fade" appear>
+    <div class="create-brewer-wrapper">
+        <v-layout justify-center>
+            <v-flex xs12 sm10 md6 lg4 elevation-7>
+            <v-card>
+                <v-card-text>
+                <v-form v-model="valid" ref="createBrewerForm">
+                    <v-text-field
+                    label="Username"
+                    v-model="username"
+                    :rules="usernameRules"
+                    required
+                    ></v-text-field>
+                    <v-text-field
+                    label="First Name"
+                    v-model="firstname"
+                    :rules="firstnameRules"
+                    required
+                    ></v-text-field>
+                    <v-text-field
+                    label="Last Name"
+                    v-model="nullFields.last_name"
+                    ></v-text-field>
+                    <v-checkbox label="Featured?" v-model="featured"></v-checkbox>
+                    <v-select
+                    class="someclass"
+                    label="Brewer Rank"
+                    auto
+                    hide-details
+                    append-icon="arrow_drop_down"
+                    :items="allRanks"
+                    v-model="nullFields.rank"
+                    ></v-select>
+                    <v-select
+                    class=""
+                    :items="beers"
+                    v-model="selectedBeers"
+                    multiple
+                    auto
+                    append-icon="arrow_drop_down"
+                    hide-details
+                    label="Any brews he/she was a part of?">
+                    </v-select>              
 
-              <v-btn :disabled="!valid" @click.prevent="handleSubmit" style="background-color: #F4812D; color: white;">Create</v-btn>
+                    <div class="button-wrapper">
+                        <v-btn :disabled="!valid" @click.prevent="handleSubmit" style="background-color: #F4812D; color: white;">Create</v-btn>
+                        <v-btn v-on:click="clear" style="color: #F4812D;">clear</v-btn>
+                    </div>
 
-              <v-btn v-on:click="clear" style="color: #F4812D;">clear</v-btn>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </div>
+                </v-form>
+                </v-card-text>
+            </v-card>
+            </v-flex>
+        </v-layout>
+    </div>
+    </transition>
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
@@ -59,8 +63,9 @@ export default {
         return {
             nullFields: {
                 last_name: null,
-                selectedRank: null,
-            },    
+                rank: null,
+            },
+            test: null,
             username: null,
             firstname: null,
             featured: false,
@@ -79,7 +84,7 @@ export default {
         notNullFields() {
             let dbObject = {}
             Object.keys(this.nullFields).filter(key => {
-                if (this.nullFields[key] !== null && this.nullFields[key].length > 0) {
+                if (this.nullFields[key] != null) {
                     dbObject[key] = this.nullFields[key]
                 }
             })
@@ -138,5 +143,24 @@ export default {
   .create-brewer-wrapper {
     @include flexRowC;
     min-height: calc(100% - 74px);
+
+    .button-wrapper {
+        margin-top: 50px;
+    }
   }
+
+    // animation / transition
+    .fade-enter {
+        opacity: 0
+    }
+
+    .fade-enter-active {
+        transition: opacity 1s ease;
+    }
+    
+    // .fade-leave {}
+
+    .fade-leave-active {
+        opacity: 0;
+    }
 </style>
