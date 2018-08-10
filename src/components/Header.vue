@@ -2,13 +2,14 @@
   <div class="navWrapper">
     <div class="navContainer">
       <router-link to="/" >Home</router-link>
-        <v-menu ofset-y>
+        <v-menu offset-y min-width="500">
             <div
                 slot="activator"
             >
                 Admin
             </div>
-            <v-card>
+            <div class="admin-menu">
+            <v-card dark>
                 <v-list>
                     <v-list-tile-content>
                         <v-list-tile-title>Create</v-list-tile-title>
@@ -18,7 +19,7 @@
 
             <v-divider></v-divider>
 
-            <v-list>
+            <v-list lime accent-3>
                 <router-link :to="{name: 'createBeer'}">
                     <v-list-tile>
                         <v-list-tile-title>Beer</v-list-tile-title>
@@ -31,7 +32,7 @@
                 </router-link>
             </v-list>
 
-            <v-card>
+            <v-card dark>
                 <v-list>
                     <v-list-tile-content>
                         <v-list-tile-title>Update</v-list-tile-title>
@@ -41,7 +42,7 @@
 
             <v-divider></v-divider>
 
-            <v-list>
+            <v-list dark>
                 <router-link :to="{name: 'editBeerAll'}">
                     <v-list-tile>                  
                         <v-list-tile-title>Beer</v-list-tile-title>
@@ -53,6 +54,7 @@
                     </v-list-tile>
                 </router-link>
             </v-list>
+            </div>
         </v-menu>
     </div>
   </div>

@@ -11,6 +11,7 @@
             <img v-bind:src="beer.image_url" alt="image of currently active beer" class="beer-card-image">
           </div>
 
+        <div class="beer-info-wrapper">
           <div class="beer-title-wrapper">
             <div v-if="beer.status === 'active-empty'" class="runout"></div>
             <span class="beer-card-title">Title</span>
@@ -27,6 +28,7 @@
                 <router-link tag="v-btn" class="info" :to="{name: 'editBeer', params: {id: `${beer.id}`}}">Edit</router-link>
               </div>
             </div>
+        </div>
             <!-- <button v-if="authed" v-on:click.prevent="btnClick(index)" type="button" name="button">Update</button>
 
             <router-link v-if="authed" :to="{name: 'editBeer', params: {id: `${beer.id}`}}">Edit</router-link> -->
@@ -52,28 +54,15 @@ import MobSlider from '@/components/MobSlider.vue'
 import { statusBeersMixin } from '../mixins/statusBeersMixin'
 export default {
     mixins: [statusBeersMixin("active", 3)],
-  components: {
-    MobSlider,
-    // EditBeerComponent
-  },
-  props: [],
-  data() {
-    return {
-    //   beers: [],
-    //   beerToEdit: {}
-    }
-  },
-  methods: {
-    //   ...mapActions['fetchBeers'],
-    // btnClick(index) {
-    //   if (index) {
-    //     this.beerToEdit = this.beers[index]
-    //   }
-    // },
-    // clearUpdate(value) {
-    //   this.beerToEdit = value
-    // },
-  }
+    components: {
+        MobSlider,
+        // EditBeerComponent
+    },
+    props: [],
+    data() {
+        return {}
+    },
+    methods: {}
 }
 </script>
 <style lang="scss">
@@ -178,6 +167,7 @@ export default {
         }
 
         .beer-card-heading {
+            text-align: left;
           @include h3Style;
           @media screen and (max-width: 991px) {
             font-size: 16px;
@@ -232,6 +222,7 @@ export default {
           flex-flow: column nowrap;
           align-items: flex-start;
           justify-content: space-between;
+          flex-grow: 1;
 
             .edit-abv-wrapper {
                 display: flex;
@@ -252,6 +243,7 @@ export default {
         }
 
         .beer-description-wrapper {
+            flex-grow: 1;
             .desc-flex {
                 width: 100%;            
             }
@@ -276,4 +268,16 @@ export default {
       }
     }
   }
+    .beer-info-wrapper {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 400px;
+        width: 100%;        
+
+        .beer-title-wrapper {
+            min-height: 140px;
+        }
+    }
 </style>
