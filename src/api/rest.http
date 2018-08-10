@@ -1,0 +1,48 @@
+# cmd + opt + r
+http://localhost:8000
+http://localhost:8000/beers
+http://localhost:8000/beers?limit=1http://localhost:8000/beers?limit=1
+http://localhost:8000/beers/1
+http://localhost:8000/beers?status=active
+http://localhost:8000/beers?status=brewing
+http://localhost:8000/beers?status=past
+http://localhost:8000/beers?status=upcoming
+
+http://localhost:8000/brewers
+http://localhost:8000/brewers?limit=1&offset=2&order=desc
+http://localhost:8000/brewers?limit=2
+http://localhost:8000/brewers/2
+http://localhost:8000/brewers?rank=8
+
+
+
+# // ==============  BEER ENDPOINTS  ============== //
+
+# GET /beers ?:(|limit|order|offset)          --- COMPLETE ---
+# GET /beers/:id ?:(include_brewers)          --- COMPLETE ---
+# GET /beers?:status ?:(limit|order)          --- COMPLETE ---
+# GET /beers?:featured ?:(limit|order)        --- COMPLETE ---
+
+# POST /beers                                 --- COMPLETE ---
+
+# PUT/PATCH /beers/:id                        --- COMPLETE ---
+
+# DELETE /beers/:id                           --- COMPLETE ---
+
+# // ==============  BREWER ENDPOINTS  ============== //
+
+# GET /brewers ?:(|limit|order|offset)        --- COMPLETE ---
+# GET /brewers/:id ?:(include_beers)          --- COMPLETE ---          
+# GET /brewers?:featured ?:(limit|order)      --- COMPLETE ---
+# GET /brewers?:rank ?:(limit|order|offset)   --- COMPLETE ---
+
+# POST /brewers                               --- COMPLETE ---
+
+# PUT/PATCH /brewers/:id                      --- COMPLETE ---
+
+# DELETE /brewers/:id                         --- COMPLETE ---
+
+# // ==============  RANK ENDPOINTS  ============== //
+
+# GET /ranks ?:(limit|order|offset)           --- COMPLETE ---
+# GET /rank ?:(level)                         --- COMPLETE ---

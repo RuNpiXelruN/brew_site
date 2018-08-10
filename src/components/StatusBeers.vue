@@ -1,10 +1,7 @@
 <template>
-  <div>
-    <h1>Status Beers here</h1>
-  </div>
 </template>
 <script>
-import AppService from '@/app.service.js'
+import AppService from '@/api/app.service.js'
 export default {
   components: {},
   props: [
@@ -20,11 +17,21 @@ export default {
   },
   methods: {
     getBeers() {
-      AppService.getBeersWithStatus(this.status, this.limit, this.order, this.offset)
-      .then(data => {
-        this.beers = data
-        this.$emit('data', this.beers)
-      }).catch(err => { console.log("AppService Err: ", err) })
+      AppService.getBeers(this.status, this.limit, this.order, this.offset)
+      .then(result => {
+          console.log("Res", result)
+        // if (result.error) {
+        //   console.log("There was an error fetching beers", result.error);
+        //   return
+        // }
+
+        // if (result.success) {
+        //   this.beers = result.success.data
+          this.beers = result
+          this.$emit('data', this.beers)
+          return
+        // }
+      })
     }
   },
   watch: {},

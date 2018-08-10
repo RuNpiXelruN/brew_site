@@ -1,66 +1,82 @@
 <template>
-  <div id="app">
-    <Header/>
-    <router-view/>
-    <div class="hero-section">
-      <h1 class="mf-fermented">Mentally Fermented</h1>
-      <div class="hero-wrapper">
-        <div class="hero-text">
-          <h2>Drinking beer<br>
-            shouldn't be hard
-          </h2>
+  <v-app class="bgMain">
+    <div id="app">      
+      <Header/>
+      <router-view/>
+      <Footer/>
+    </div>
 
-          <p>With Mentally Fermented, it's simple,<br>
-            personal and fun for everyone.
-          </p>
-        </div>
-        <div class="hero-image">
-          <img src="http://via.placeholder.com/400x700">
-        </div>
-      </div>
-    </div>
-    <div class="about-fermented">
-      <p>It all began in 7000BCE, when 3 yeast spontaneously fermented the sugars of Redfern.
-        Since that very day, The Art of Brewing has been refined and passed down the Fiddler bloodline.
-        Liam’s Funky Crumpet has truely revolutionised the way the world drinks beer.
-      </p>
-    </div>
-    <on-tap></on-tap>
-    <now-brewing></now-brewing>
-    <past-beers></past-beers>
-  </div>
+    <v-snackbar
+        v-model="popup.state"
+        :top="y === 'top'"
+        :right="x === 'right'"
+        :bottom="y === 'bottom'"
+        :left="x === 'left'"
+        :timeout="popup.timeout">
+        {{ popup.text  }}
+        
+        <v-btn
+            color="blue lighten-3"
+            flat
+            @click="popup.state = false">
+            Close
+      </v-btn>           
+    </v-snackbar>
+  </v-app>
 </template>
 
 <script>
-import PastBeers from '@/components/Empty.vue'
-import NowBrewing from '@/components/NowBrewing.vue'
-import OnTap from '@/components/OnTap.vue'
 import Header from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
+
 export default {
   name: 'app',
   components: {
     Header,
-    OnTap,
-    NowBrewing,
-    PastBeers
-  }
+    Footer
+  },
+  data() {
+    return {
+        snackbar: false,
+        x: "right",
+        y: "top",
+    }
+  },
+  computed: {
+      popup() {
+          return this.$store.getters.popup
+      }
+  },
+  created() {
+      this.$store.dispatch('initBeers')
+      this.$store.dispatch('initBasicBeers')
+      this.$store.dispatch('initBrewers')
+      this.$store.dispatch('initBasicBrewers')
+      this.$store.dispatch('initBrewerRanks')
+  },
+  watch: {}
 }
 </script>
+<style lang="scss">
 
-<style>
 #app {
+  color: $textColor;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
 }
 
 body {
-  width: 80%;
-  margin-left: 10%;
-  background-color: #FFF8E2;
+  background-color: $bgColor;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 .mf-fermented {

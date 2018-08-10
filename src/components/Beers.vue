@@ -5,16 +5,12 @@
       <h2>{{beer.name}}</h2>
       <p>{{beer.description}}</p>
       <p>{{beer.alcohol_content}}</p>
-      <!-- <app-post :link="post.link">
-        <h3 slot="title">{{ post.title }}</h3>
-        <p slot="description">{{ post.description }}</p>
-      </app-post> -->
     </div>
   </div>
 </template>
 
 <script>
-import AppService from '@/app.service.js'
+import AppService from '@/api/app.service.js'
 export default {
   data() {
     return {
@@ -34,8 +30,12 @@ export default {
         })
       } else {
         AppService.getBeers(this.limit, this.order, this.offset)
-        .then(data => {
-          this.beers = data
+        .then(result => {
+          if (result.error) {
+            console.log(result.error)
+          } else {
+            this.beers = result.success
+          }
         })
       }
     }
