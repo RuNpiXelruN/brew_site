@@ -2,7 +2,15 @@
   <div class="navWrapper">
     <div class="navContainer">
       <router-link to="/" >Home</router-link>
-        <v-menu offset-y min-width="500">
+      <div @click="goSignup">Go Signup</div>
+        <v-dialog
+            v-model="dialog"
+            width="500">
+                <a slot="activator">Sign Up</a>
+                <signup-component></signup-component>
+        </v-dialog>
+
+        <v-menu offset-y min-width="500" v-if="authed">
             <div
                 slot="activator"
             >
@@ -62,14 +70,27 @@
 
 <script>
 import vueScrollTo from 'vue-scroll-to'
+import SignupComponent from '@/components/auth/SignUp.vue'
 export default {
   props: [],
   components: {
+      SignupComponent
   },
   data() {
-    return {}
+    return {
+        dialog: false,
+    }
   },
-  methods: {},
+  computed: {
+      authed() {
+          return this.$store.getters.authed
+      }
+  },
+  methods: {
+      goSignup() {
+          this.$store.dispatch('goSignup')
+      }
+  },
   created() {}
 }
 </script>

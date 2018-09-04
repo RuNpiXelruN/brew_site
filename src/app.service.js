@@ -1,12 +1,14 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://localhost:8000'
+axios.defaults.baseURL = 'http://localhost:8000/api'
 
 const appService = {
 
   async getBeers(status, limit, order, offset) {
     try {
       let data = await axios.get(`/beers?limit=${limit}&order=${order}&offset=${offset}&status=${status}`)
+        console.log('​asyncgetBeers -> data', data);
+
       return data.data
     } catch(err) {
       console.log("Error -> GET getBeers()");

@@ -1,4 +1,4 @@
-import api from '../../api/app.service'
+import api from '../../api/app.service.js'
 
 const state = {
     beers: [],
@@ -6,20 +6,10 @@ const state = {
     basicBeers: [],
 }
 
-const mutations = {
-    setBasicBeers: (state, beers) => {
-        state.basicBeers = beers
-    },
-    setBeers: (state, beers) => {
-        state.beers = beers
-    },
-    setCurrentBeer: (state, beer) => {
-        state.currentBeer = beer
-    },
-
-    addBeer: (state, beer) => {
-        state.beers = state.beers.push(beer)   
-    }
+const getters = {
+    basicBeers: (state) => state.basicBeers,
+    beers: (state) => state.beers,
+    currentBeer: (state) => state.currentBeer    
 }
 
 const actions = {
@@ -91,10 +81,20 @@ const actions = {
     },
 }
 
-const getters = {
-    basicBeers: (state) => state.basicBeers,
-    beers: (state) => state.beers,
-    currentBeer: (state) => state.currentBeer    
+const mutations = {
+    setBasicBeers: (state, beers) => {
+        state.basicBeers = beers
+    },
+    setBeers: (state, beers) => {
+        state.beers = beers
+    },
+    setCurrentBeer: (state, beer) => {
+        state.currentBeer = beer
+    },
+
+    addBeer: (state, beer) => {
+        state.beers = state.beers.push(beer)   
+    }
 }
 
 export default{

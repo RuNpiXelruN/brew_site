@@ -8,6 +8,7 @@ const CreateBrewer = () => System.import('@/components/CreateBrewer')
 const EditBeer = () => System.import('@/components/EditBeer')
 const EditBeerAll = () => System.import('@/components/EditBeerAll')
 const EditBrewer = () => System.import('@/components/EditBrewer')
+const SignUp = () => System.import('@/components/auth/SignUp')
 
 // import GSignInButton from 'vue-google-signin-button'
 // Vue.use(GSignInButton)
@@ -46,7 +47,12 @@ export var router = new Router({
             path: '/brewers/edit',
             component: EditBrewer,
             name: 'editBrewer'
-        },
+        },        
+        {
+            path: '/signup',
+            component: SignUp,
+            name: 'SignUp'
+        },        
     ]
 })
 
