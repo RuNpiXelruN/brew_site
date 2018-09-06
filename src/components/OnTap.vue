@@ -47,6 +47,7 @@
   </div>
 </template>
 
+
 <script>
 // TODO add 'runout' class to mob slider
 import MobSlider from '@/components/MobSlider.vue'

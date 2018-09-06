@@ -6392,6 +6392,10 @@ vue-flickity@^1.0.9:
   dependencies:
     flickity "^2.0.5"
 
+vue-google-oauth2@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/vue-google-oauth2/-/vue-google-oauth2-1.0.9.tgz#eb261c2cf8ceea6636386173f177025a33b1bd47"
+
 vue-google-signin-button@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/vue-google-signin-button/-/vue-google-signin-button-1.0.2.tgz#71389a1233ece20c06aace0870acf54794b3af3c"

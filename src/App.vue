@@ -53,6 +53,8 @@ export default {
       this.$store.dispatch('initBrewers')
       this.$store.dispatch('initBasicBrewers')
       this.$store.dispatch('initBrewerRanks')
+      
+    this.$store.dispatch('tryAutoLogin')
   },
   watch: {}
 }

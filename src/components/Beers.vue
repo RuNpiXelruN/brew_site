@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <h1>Beersssssss here :)</h1>
-    <div class="beers-wrapper" v-for="beer in beers" v-bind:key="beers.id">
+    <div class="beers-wrapper" v-for="beer in beers" v-bind:key="beer.id">
       <h2>{{beer.name}}</h2>
       <p>{{beer.description}}</p>
       <p>{{beer.alcohol_content}}</p>

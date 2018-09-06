@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Vuetify from 'vuetify'
+import GAuth from 'vue-google-oauth2'
 import store from './store'
 import('../node_modules/vuetify/dist/vuetify.min.css')
 import './assets/scss/index.scss'
@@ -16,7 +17,12 @@ Vue.use(Vuetify, {
   }
 })
 
-// Vue.prototype.$eventHub = new Vue()
+Vue.use(GAuth, {
+    clientId: process.env.GAUTH_CLIENT_ID,
+    scopes: [
+		"https://www.googleapis.com/auth/userinfo.email",
+    ]
+})
 
 /* eslint-disable no-new */
 new Vue({
