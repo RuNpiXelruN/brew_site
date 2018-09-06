@@ -1,20 +1,21 @@
 import axios from 'axios'
 
 axios.defaults.baseURL = 'http://localhost:8000/api'
-const appService = {                        
-    async goSignup() {
+const appService = {        
+    async login(code, redirect_uri) {
         try {
-            let response = await axios.post(`/auth`, "", {
+            let response = await axios.post(`/auth/callback?code=${code}&redirect_url=${redirect_uri}`, "", {
+                withCredentials: true,
                 headers: {
                     'accept': 'application/json',
-                    'brew_token': "testttt",
-                  }
+                }
             })
-            return response.data.url
-        } catch (err) {
-            console.log("Axios err", err)
+            return response
+        } catch(err) {
+            console.log('TCL: }catch -> err', err);            
         }
     },
+        
         // ************************ BEER ENDPOINTS ************************ //
     async getAllBeers() {
         try {
@@ -45,17 +46,19 @@ const appService = {
         }      
     },
 
-    async updateBeer(id, data) {
+    async updateBeer(id, data, token) {
         try {
             let response = await axios.patch(`/beers/${id}`, data, {
+                withCredentials: true,
                 headers: {
                     'accept': 'application/json',
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'BrewToken': token
                 }
             })
             return response
         } catch (error) {
-            console.log('​}catch -> error', error);            
+            return Object.assign({}, error)          
         }
     },
 
@@ -68,17 +71,31 @@ const appService = {
                 }
             })
             return response
-        } catch (err) { 1   
+        } catch (err) {
             console.log('​}catch -> err', err);            
         }
     },
 
-    async deleteBeer(id) {
+    async deleteBeer(id, token) {
         try {
-            let response = await axios.delete(`/beers/${id}`)
+            let response = await axios.delete(`/beers/${id}`, {
+                withCredentials: true,
+                headers: {
+                    'accept': 'application/json',
+                    'BrewToken': token
+                }
+            })            
             return response
         } catch (error) {
-            console.log('​}catch -> error', error);            
+            return Object.assign({}, error)
+            // console.log('error', error);
+            // console.log('errorType', typeof error);
+            // console.log('error', Object.assign({}, error));
+            // console.log('getOwnPropertyNames', Object.getOwnPropertyNames(error));
+            // console.log('stackProperty', Object.getOwnPropertyDescriptor(error, 'stack'));
+            // console.log('messageProperty', Object.getOwnPropertyDescriptor(error, 'message'));
+            // console.log('stackEnumerable', error.propertyIsEnumerable('stack'));
+            // console.log('messageEnumerable', error.propertyIsEnumerable('message'));            
         }
     },
 

@@ -1,97 +1,48 @@
 <template>
-  <div class="navWrapper">
-    <div class="navContainer">
-      <router-link to="/" >Home</router-link>
-      <div @click="goSignup">Go Signup</div>
-        <v-dialog
-            v-model="dialog"
-            width="500">
-                <a slot="activator">Sign Up</a>
-                <signup-component></signup-component>
-        </v-dialog>
-
-        <v-menu offset-y min-width="500" v-if="authed">
-            <div
-                slot="activator"
-            >
-                Admin
-            </div>
-            <div class="admin-menu">
-            <v-card dark>
-                <v-list>
-                    <v-list-tile-content>
-                        <v-list-tile-title>Create</v-list-tile-title>
-                    </v-list-tile-content>
-                </v-list>                
-            </v-card>
-
-            <v-divider></v-divider>
-
-            <v-list lime accent-3>
-                <router-link :to="{name: 'createBeer'}">
-                    <v-list-tile>
-                        <v-list-tile-title>Beer</v-list-tile-title>
-                    </v-list-tile>
-                </router-link>
-                <router-link :to="{name: 'createBrewer'}">
-                    <v-list-tile>                  
-                        <v-list-tile-title>Brewer</v-list-tile-title>
-                    </v-list-tile>
-                </router-link>
-            </v-list>
-
-            <v-card dark>
-                <v-list>
-                    <v-list-tile-content>
-                        <v-list-tile-title>Update</v-list-tile-title>
-                    </v-list-tile-content>
-                </v-list>                
-            </v-card>
-
-            <v-divider></v-divider>
-
-            <v-list dark>
-                <router-link :to="{name: 'editBeerAll'}">
-                    <v-list-tile>                  
-                        <v-list-tile-title>Beer</v-list-tile-title>
-                    </v-list-tile>
-                </router-link>
-                <router-link :to="{name: 'editBrewer'}">
-                    <v-list-tile>                  
-                        <v-list-tile-title>Brewer</v-list-tile-title>
-                    </v-list-tile>
-                </router-link>
-            </v-list>
-            </div>
-        </v-menu>
+    <div class="navWrapper">
+        <div class="navContainer">
+            <router-link to="/" >Home</router-link>
+            <div v-if="!authed" @click="GAuth">Login</div>
+            <div v-else @click="logout">Logout</div>        
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
 import vueScrollTo from 'vue-scroll-to'
 import SignupComponent from '@/components/auth/SignUp.vue'
 export default {
-  props: [],
-  components: {
-      SignupComponent
-  },
-  data() {
-    return {
-        dialog: false,
-    }
-  },
-  computed: {
-      authed() {
-          return this.$store.getters.authed
-      }
-  },
-  methods: {
-      goSignup() {
-          this.$store.dispatch('goSignup')
-      }
-  },
-  created() {}
+    props: [],
+    components: {
+        SignupComponent
+    },
+    data() {
+        return {
+            dialog: false,
+        }
+    },
+    computed: {        
+        authed() {
+            return this.$store.getters.isAuthed
+        }
+    },
+    methods: {
+        async GAuth() {
+            try {
+                let response = await this.$gAuth.getAuthCode((authCode) => {                
+                    this.$store.dispatch('login', {code: authCode, redirect_uri: 'postmessage'})        
+                })
+            } catch (err) {
+                console.log("Error in GAuth", err)
+            }                
+        },
+        logout() {
+            this.$store.dispatch('logout')
+            this.$store.dispatch('createPopup', {text: "Successfully signed out.", state: true})
+            this.$router.push("/")
+        }
+    },
+    created() {}
 }
 </script>
 <style lang="scss">

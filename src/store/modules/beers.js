@@ -22,17 +22,35 @@ const actions = {
         }
     },
 
-    async deleteBeer({ dispatch }, params) {
+    async updateBeer({ dispatch, rootState }, params) {
+        if (!rootState.auth.authToken) {
+            return {status: 403, statusText: "You must be logged in to perform this action."}
+        }
+
         try {
-            let response = await api.deleteBeer(params.id)
-                if (response.status == 200) {
+            let response = await api.updateBeer(params.id, params.data, rootState.auth.authToken)        
+                dispatch('initBeers')
+                return response
+        } catch(err) {
+            return Object.assign({}, err)
+        }
+    },
+
+    async deleteBeer({ dispatch, rootState }, params) {        
+        if (!rootState.auth.authToken) {
+            return {status: 403, statusText: "You must be logged in to perform this action."}
+        }
+            
+        try {
+            let result = await api.deleteBeer(params.id, rootState.auth.authToken)
+                if (result.status == "200") {
                     dispatch('initBeers')
-                    return response.statusText
+                    return result
                 } else {
-                    console.log("Error", response.status)
-                }
+                    return result.response
+                }                
         } catch (err) {
-            console.log('​}catch -> err', err);            
+            return Object.assign({}, err)
         }
     },
 
@@ -56,18 +74,6 @@ const actions = {
         } catch(err) {
             console.log('​}catch -> err', err);            
         }        
-    },
-
-    async updateBeer({ dispatch }, params) {
-        try {
-            let response = await api.updateBeer(params.id, params.data)        
-                if (response.status == 200) {
-                    dispatch('initBeers')
-                    return response.statusText
-                }
-        } catch(err) {
-            console.log('​asyncupdateBeers -> err', err);
-        }
     },
 
     async fetchCurrentBeer({ commit }, params) {

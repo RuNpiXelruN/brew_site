@@ -1,56 +1,56 @@
-// import authApi from '../../api/auth.service'
 import api from '../../api/app.service.js'
 
 const state = {
-    idToken: null,
+    authToken: null,
     userId: null,
 }
 
 const getters = {
-    authed: (state) => state.authed
+    isAuthed: (state) => !!state.authToken,
+    token: (state) => state.authToken
 }
 
 const actions = {
-    async goSignup() {
-        try {
-            let url = await api.goSignup()
-            // console.log('TCL: asyncgoSignup -> url', url);
-
-            // let authWindow = window.open(url)
-            
-            // setinterval {
-            //     // window is closed? 
-
-            //     if authWindow.location.path === redirectURI {
-            //         let authPayload = json.jsnonify(authWindow.document.body.innerText)
-            //         success
-            //         authWindow.close()
-            //     } else {
-            //         setInterval again
-            //     }
-            // }
-            // authWindow.onload = {
-                // CHECK PAGE RELOAD for API AUTH REDIRECT
-                // BLOCK LOAD
-                // GET JSON PAYLOAD
-                // CLOSE WINDOW
-            // }
-        } catch (err) {
-            console.log("Errorrrr", err)
+    tryAutoLogin({ commit }) {
+        let token = localStorage.getItem("BrewToken")
+        if (!token) {
+            return
         }
+        let userId = localStorage.getItem("user_id")
+        commit("autoAuthUser", {token, userId})
+    },
+
+    async login({commit}, params) {
+        try {
+            let response = await api.login(params.code, params.redirect_uri)
+            localStorage.setItem("BrewToken", response.headers.brewtoken)
+            localStorage.setItem("user_id", response.data.id)
+            commit('setAuth', {userId: response.data.userId, token: response.headers.brewtoken})
+        } catch (err) {
+            console.log('TCL: }catch -> err', err);            
+        }
+    },
+    logout({commit}) {
+        commit('setLogout')
     }
-    // async signUp({ commit }, authData) {
-    //     try {
-    //         let data = await authApi.signUp(authData.email, authData.password)
-    //         console.log('​asyncsignUp -> data', data);
-    //     } catch(err) {
-    //         console.log("Error in auth vuex ", err)
-    //     }
-    // }
 }
 
 const mutations = {
+    autoAuthUser: (state, params) => {
+        state.authToken = params.token
+        state.userId = params.userId
+    },
 
+    setAuth: (state, params) => {
+        state.authToken = params.token
+        state.userId = params.userId
+    },
+    setLogout: (state) => {
+        localStorage.removeItem("BrewToken")
+        localStorage.removeItem("user_id")
+        state.authToken = null
+        state.userId = null
+    }
 }
 
 export default {

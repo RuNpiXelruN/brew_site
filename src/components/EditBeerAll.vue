@@ -177,21 +177,27 @@ export default {
             data.append('brewer_ids', this.selectedBrewers)
             data.append('status', this.selectedStatus)
 
-            let result = await this.$store.dispatch('updateBeer', {id: this.selectedBeer.id, data: data})
-            if (result == "OK") {
-                this.$store.dispatch('createPopup', {text: "Beer successfully updated", state: true})
-                this.reset()
-            }
-        },
+            let response = await this.$store.dispatch('updateBeer', {id: this.selectedBeer.id, data: data})
+            this.handleResponse(response, "Beer successfully updated")
+        },        
 
         async deleteBeer() {
-            let result = await this.$store.dispatch('deleteBeer', {id: this.selectedBeerId})
-            if (result == "OK") {
-                this.$store.dispatch('createPopup', {text: "Beer successfully deleted", state: true})
+            let response = await this.$store.dispatch('deleteBeer', {id: this.selectedBeerId})
+            this.handleResponse(response, response.data)            
+        },
+
+        handleResponse(response, successText) {
+            if (response.status == "403") {
+                this.$store.dispatch('createPopup', {text: response.statusText, state: true})
+                this.dialog = false                
+            } else if (response.status == "200") {
+                this.$store.dispatch('createPopup', {text: successText, state: true})
                 this.dialog = false
                 this.reset()
+            } else {
+                this.$store.dispatch('createPopup', {text: response.statusText, state: true})
+                this.dialog = false
             }
-            
         },
 
         reset() {
